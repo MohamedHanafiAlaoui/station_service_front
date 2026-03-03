@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AuthService } from '../../../core/services/auth';
+import { AuthService } from '../../../core/services/Auth';
 
 @Component({
   selector: 'app-login',
@@ -13,10 +13,12 @@ export class Login {
   username = '';
   password = '';
   error = '';
+
   constructor(
     private auth: AuthService,
     private router: Router,
   ) {}
+
   login() {
     this.auth.login(this.username, this.password).subscribe({
       next: () => {
@@ -25,8 +27,8 @@ export class Login {
         else if (role === 'EMPLOYE') this.router.navigate(['/employe']);
         else if (role === 'CLIENT') this.router.navigate(['/client']);
       },
-      error: () => {
-        this.error = 'Invalid username or password';
+      error: (msg) => {
+        this.error = msg; 
       },
     });
   }

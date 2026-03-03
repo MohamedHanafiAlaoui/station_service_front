@@ -1,1 +1,45 @@
-<p>register works!</p>
+<div class="flex items-center justify-center h-full">
+  <div class="w-full max-w-sm bg-white p-6 rounded-xl shadow">
+    <h2 class="text-xl font-semibold mb-4 text-center">Créer un compte</h2>
+
+    <div class="space-y-4">
+
+      <div>
+        <label class="block text-sm mb-1">Nom</label>
+        <input [(ngModel)]="form.nom" class="w-full border rounded px-3 py-2">
+      </div>
+
+      <div>
+        <label class="block text-sm mb-1">Prénom</label>
+        <input [(ngModel)]="form.prenom" class="w-full border rounded px-3 py-2">
+      </div>
+
+      <div>
+        <label class="block text-sm mb-1">Nom d'utilisateur</label>
+        <input [(ngModel)]="form.username" class="w-full border rounded px-3 py-2">
+      </div>
+
+      <div>
+        <label class="block text-sm mb-1">Mot de passe</label>
+        <input [(ngModel)]="form.password" type="password" class="w-full border rounded px-3 py-2">
+      </div>
+
+      <button (click)="register()" class="w-full bg-green-600 text-white py-2 rounded">
+        Créer le compte
+      </button>
+
+      @if (error) {
+        <p class="text-red-600 text-sm mt-2">
+          {{ error }}
+        </p>
+      }
+
+      @if (success) {
+        <p class="text-green-600 text-sm mt-2">
+          {{ success }}
+        </p>
+      }
+
+    </div>
+  </div>
+</div>
