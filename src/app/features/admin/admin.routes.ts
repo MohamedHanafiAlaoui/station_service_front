@@ -1,0 +1,16 @@
+import { Routes } from '@angular/router';
+import { Approvisionnements } from './approvisionnements/approvisionnements';
+import { Ventes } from './ventes/ventes';
+import { Pompes } from './pompes/pompes';
+import { Clients } from './clients/clients';
+import { Stations } from './stations/stations';
+import { Dashboard } from './dashboard/dashboard';
+
+export const ADMIN_ROUTES: Routes = [
+  { path: '', component: Dashboard },
+  { path: 'stations', component: Stations },
+  { path: 'clients', component: Clients },
+  { path: 'pompes', component: Pompes },
+  { path: 'ventes', component: Ventes },
+  { path: 'approvisionnements', component: Approvisionnements }
+];
