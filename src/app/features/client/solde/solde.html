@@ -1,1 +1,43 @@
-<p>solde works!</p>
+<div class="p-6 text-white">
+
+  <h2 class="text-3xl font-bold mb-6">Recharger le solde</h2>
+
+  @if ((loading$ | async)) {
+    <p class="text-gray-300">Chargement...</p>
+  }
+
+  @if ((error$ | async); as error) {
+    <p class="text-red-400">{{ error }}</p>
+  }
+
+  @if ((client$ | async); as client) {
+
+    <div class="bg-gray-800 p-5 rounded-lg border border-gray-700 mb-6">
+      <p class="text-gray-400">Solde actuel</p>
+      <p class="text-3xl font-bold text-green-400">{{ client.solde }} DH</p>
+    </div>
+
+    <!-- Formulaire -->
+    <div class="bg-gray-800 p-5 rounded-lg border border-gray-700">
+
+      <label class="text-gray-300">Montant à recharger</label>
+      <input
+        type="number"
+        [(ngModel)]="montant"
+        class="w-full mt-2 p-2 rounded bg-gray-700 text-white border border-gray-600"
+        placeholder="Ex: 100"
+      />
+
+      <button
+        (click)="onRecharge()"
+        class="mt-4 w-full bg-green-600 hover:bg-green-700 p-3 rounded font-bold"
+      >
+        Recharger
+      </button>
+
+      @if (successMessage) {
+        <p class="text-green-400 mt-4">{{ successMessage }}</p>
+      }
+    </div>
+  }
+</div>

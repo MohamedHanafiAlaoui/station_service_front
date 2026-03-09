@@ -1,1 +1,39 @@
-<p>profil works!</p>
+<div class="p-6 text-white">
+
+  <h2 class="text-3xl font-bold mb-6">Profil du client</h2>
+
+  @if ((loading$ | async)) {
+    <p class="text-gray-300">Chargement...</p>
+  }
+
+  @if ((error$ | async); as error) {
+    <p class="text-red-400">{{ error }}</p>
+  }
+
+  @if ((client$ | async); as client) {
+
+    <div class="bg-gray-800 p-6 rounded-lg border border-gray-700 space-y-4">
+
+      <div>
+        <p class="text-gray-400">Nom</p>
+        <p class="text-xl font-semibold">{{ client.nom }}</p>
+      </div>
+
+      <div>
+        <p class="text-gray-400">Prénom</p>
+        <p class="text-xl font-semibold">{{ client.prenom }}</p>
+      </div>
+
+      <div>
+        <p class="text-gray-400">Badge RFID</p>
+        <p class="text-lg">{{ client.badgeRFID }}</p>
+      </div>
+
+      <div>
+        <p class="text-gray-400">Solde actuel</p>
+        <p class="text-3xl font-bold text-green-400">{{ client.solde }} DH</p>
+      </div>
+
+    </div>
+  }
+</div>

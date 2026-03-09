@@ -1,1 +1,11 @@
-<p>navbar works!</p>
+@if ((role$ | async) === 'CLIENT') {
+  <app-client-navbar></app-client-navbar>
+}
+
+@if ((role$ | async) === 'EMPLOYE') {
+  <app-employe-navbar></app-employe-navbar>
+}
+
+@if ((role$ | async) === 'ADMIN') {
+  <app-admin-navbar></app-admin-navbar>
+}

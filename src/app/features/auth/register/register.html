@@ -1,45 +1,45 @@
-<div class="flex items-center justify-center h-full">
-  <div class="w-full max-w-sm bg-white p-6 rounded-xl shadow">
-    <h2 class="text-xl font-semibold mb-4 text-center">Créer un compte</h2>
+<div class="min-h-screen w-full flex items-center justify-center bg-gray-900 px-4 pt-20">
+  <div class="w-full max-w-md bg-gray-800 shadow-xl rounded-xl p-8 border border-gray-700">
 
-    <div class="space-y-4">
+    <h2 class="text-2xl font-bold text-center text-white mb-6">
+      Créer un compte
+    </h2>
 
-      <div>
-        <label class="block text-sm mb-1">Nom</label>
-        <input [(ngModel)]="form.nom" class="w-full border rounded px-3 py-2">
-      </div>
+    <input type="text" placeholder="Nom d'utilisateur"
+           [(ngModel)]="form.username"
+           class="w-full mb-3 px-4 py-2 bg-gray-700 text-white border border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500"/>
 
-      <div>
-        <label class="block text-sm mb-1">Prénom</label>
-        <input [(ngModel)]="form.prenom" class="w-full border rounded px-3 py-2">
-      </div>
+    <input type="text" placeholder="Nom"
+           [(ngModel)]="form.nom"
+           class="w-full mb-3 px-4 py-2 bg-gray-700 text-white border border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500"/>
 
-      <div>
-        <label class="block text-sm mb-1">Nom d'utilisateur</label>
-        <input [(ngModel)]="form.username" class="w-full border rounded px-3 py-2">
-      </div>
+    <input type="text" placeholder="Prénom"
+           [(ngModel)]="form.prenom"
+           class="w-full mb-3 px-4 py-2 bg-gray-700 text-white border border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500"/>
 
-      <div>
-        <label class="block text-sm mb-1">Mot de passe</label>
-        <input [(ngModel)]="form.password" type="password" class="w-full border rounded px-3 py-2">
-      </div>
+    <input type="password" placeholder="Mot de passe"
+           [(ngModel)]="form.password"
+           class="w-full mb-4 px-4 py-2 bg-gray-700 text-white border border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500"/>
 
-      <button (click)="register()" class="w-full bg-green-600 text-white py-2 rounded">
-        Créer le compte
-      </button>
+    <button (click)="register()"
+            class="w-full bg-blue-600 text-white py-2 rounded-lg font-semibold hover:bg-blue-700 transition">
+      Créer le compte
+    </button>
 
-      @if (error) {
-        <p class="text-red-600 text-sm mt-2">
-          {{ error }}
-        </p>
-      }
+    @if (success) {
+      <p class="text-green-400 font-semibold text-center mt-4">{{ success }}</p>
+    }
 
-      @if (success) {
-        <p class="text-green-600 text-sm mt-2">
-          {{ success }}
-        </p>
-      }
+    @if (error) {
+      <p class="text-red-400 font-semibold text-center mt-4">{{ error }}</p>
+    }
 
-    </div>
+    <p class="text-center text-gray-300 mt-6">
+      Vous avez déjà un compte ?
+      <a routerLink="/auth" class="text-blue-400 font-semibold hover:underline">
+        Se connecter
+      </a>
+    </p>
+
   </div>
 </div>

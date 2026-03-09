@@ -1,1 +1,43 @@
-<p>dashboard works!</p>
+<div class="p-6 text-white">
+
+  <h2 class="text-3xl font-bold mb-6">Tableau de bord</h2>
+
+  @if ((loading$ | async)) {
+    <p class="text-gray-300">Chargement...</p>
+  }
+
+  @if ((error$ | async); as error) {
+    <p class="text-red-400">{{ error }}</p>
+  }
+
+  @if ((client$ | async); as client) {
+    <div class="bg-gray-800 p-5 rounded-lg border border-gray-700 mb-6">
+      <p class="text-gray-400">Nom complet</p>
+      <p class="text-xl font-semibold">{{ client.nom }} {{ client.prenom }}</p>
+
+      <p class="text-gray-400 mt-4">Badge RFID</p>
+      <p class="text-lg">{{ client.badgeRFID }}</p>
+
+      <p class="text-gray-400 mt-4">Solde actuel</p>
+      <p class="text-3xl font-bold text-green-400">{{ client.solde }} DH</p>
+    </div>
+  }
+
+  <h3 class="text-2xl font-bold mb-3">Dernières opérations</h3>
+
+  @if ((historique$ | async); as hist) {
+    @if (hist.length === 0) {
+      <p class="text-gray-400">Aucune opération trouvée.</p>
+    } @else {
+      <div class="space-y-3">
+        @for (item of hist; track item.id) {
+          <div class="bg-gray-800 p-4 rounded-lg border border-gray-700">
+            <p class="text-gray-300">Montant payé: <span class="font-bold">{{ item.montantPaye }} DH</span></p>
+            <p class="text-gray-300">Quantité: {{ item.quantite }} L</p>
+            <p class="text-gray-300">Pompe: {{ item.pompeId }}</p>
+          </div>
+        }
+      </div>
+    }
+  }
+</div>
