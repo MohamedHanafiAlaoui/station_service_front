@@ -44,9 +44,9 @@ export class Login {
     this.auth.login(this.username, this.password).subscribe({
       next: () => {
         const role = this.auth.getRole();
-        if (role === 'ADMIN') this.router.navigate(['/admin']);
-        else if (role === 'EMPLOYE') this.router.navigate(['/employe']);
-        else if (role === 'CLIENT') this.router.navigate(['/client']);
+        if (role === 'ROLE_ADMIN') this.router.navigate(['/admin']);
+        else if (role === 'ROLE_EMPLOYE') this.router.navigate(['/employe']);
+        else if (role === 'ROLE_CLIENT') this.router.navigate(['/client']);
       },
       error: (msg) => {
     this.error = typeof msg === 'string' ? msg : 'Erreur de connexion.';      },

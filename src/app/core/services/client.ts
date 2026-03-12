@@ -18,9 +18,7 @@ export class ClientService {
     return this.http.put<any>(`${Api.CLIENTS}/${id}`, body);
   }
 
-  deleteClient(id: number): Observable<void> {
-    return this.http.delete<void>(`${Api.CLIENTS}/${id}`);
-  }
+
 
   recharge(id: number, montant: number): Observable<void> {
     return this.http.put<void>(`${Api.CLIENTS}/${id}/recharge?montant=${montant}`, {});
@@ -49,4 +47,11 @@ export class ClientService {
 
     return this.http.get<any>(`${Api.VENTES}/client/${clientId}`, { params });
   }
+
+  updateName(id: number, nom: string, prenom: string): Observable<any> {
+    const body = { nom, prenom };
+    return this.http.put<any>(`${Api.CLIENTS}/${id}`, body);
+  }
+  
+
 }

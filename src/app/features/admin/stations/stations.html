@@ -1,1 +1,26 @@
-<p>stations works!</p>
+<div class="p-6 text-white">
+  <h2 class="text-3xl font-bold mb-6">Stations (Public)</h2>
+
+  @if ((stations$ | async); as stations) {
+    @if (stations.length === 0) {
+      <p class="text-gray-400">Aucune station trouvée.</p>
+    } @else {
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        @for (s of stations; track s.id) {
+          <div class="bg-gray-800 p-4 rounded-lg border border-gray-700">
+            <div class="text-lg font-semibold flex items-center gap-2">
+              <fa-icon [icon]="faGasPump"></fa-icon>
+              <span>{{ s.nom }}</span>
+            </div>
+            <div class="text-gray-300 mt-1 flex items-center gap-2">
+              <fa-icon [icon]="faLocationDot"></fa-icon>
+              <span>{{ s.adresse }}</span>
+            </div>
+          </div>
+        }
+      </div>
+    }
+  } @else {
+    <p class="text-gray-300">Chargement...</p>
+  }
+</div>

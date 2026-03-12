@@ -8,18 +8,15 @@ export class ErrorService {
 
   getMessage(error: HttpErrorResponse): string {
 
-    // أخطاء validation من Spring Boot
     if (error.error?.validationErrors) {
       const firstKey = Object.keys(error.error.validationErrors)[0];
       return error.error.validationErrors[firstKey];
     }
 
-    // message من backend
     if (error.error?.message) {
       return error.error.message;
     }
 
-    // error من backend
     if (error.error?.error) {
       return error.error.error;
     }

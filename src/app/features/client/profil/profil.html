@@ -1,38 +1,124 @@
 <div class="p-6 text-white">
 
-  <h2 class="text-3xl font-bold mb-6">Profil du client</h2>
+  <!-- Header -->
+  <div class="mb-8">
+    <h2 class="text-3xl font-bold tracking-tight">Profil du client</h2>
+    <p class="text-gray-400 text-sm mt-1">Informations personnelles et solde actuel.</p>
+  </div>
 
+  <!-- Loading -->
   @if ((loading$ | async)) {
-    <p class="text-gray-300">Chargement...</p>
+    <div class="flex items-center gap-2 text-gray-300">
+      <span class="animate-spin border-2 border-gray-600 border-t-transparent rounded-full w-5 h-5"></span>
+      Chargement...
+    </div>
   }
 
+  <!-- Error -->
   @if ((error$ | async); as error) {
-    <p class="text-red-400">{{ error }}</p>
+    <div class="bg-red-900/40 border border-red-700 text-red-300 p-3 rounded-lg">
+      {{ error }}
+    </div>
   }
 
+  <!-- Content -->
   @if ((client$ | async); as client) {
 
-    <div class="bg-gray-800 p-6 rounded-lg border border-gray-700 space-y-4">
+    <div class="bg-gray-900 p-6 rounded-xl border border-gray-700 shadow-lg space-y-6">
 
-      <div>
-        <p class="text-gray-400">Nom</p>
-        <p class="text-xl font-semibold">{{ client.nom }}</p>
+      <!-- Avatar + Name -->
+      <div class="flex items-center gap-4">
+        <div class="w-16 h-16 rounded-full bg-gray-800 flex items-center justify-center text-2xl font-bold">
+          {{ client.prenom?.charAt(0).toUpperCase() }}
+        </div>
+
+        <div>
+          <p class="text-xl font-semibold">{{ client.nom }} {{ client.prenom }}</p>
+          <p class="text-gray-400 text-sm">Client ID : {{ client.id }}</p>
+        </div>
       </div>
 
-      <div>
-        <p class="text-gray-400">Prénom</p>
-        <p class="text-xl font-semibold">{{ client.prenom }}</p>
+      <!-- Modifier Button -->
+      <div class="flex justify-end">
+        <button 
+          class="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg text-white text-sm"
+          (click)="editMode = true">
+          Modifier
+        </button>
       </div>
 
-      <div>
-        <p class="text-gray-400">Badge RFID</p>
-        <p class="text-lg">{{ client.badgeRFID }}</p>
+      <hr class="border-gray-700">
+
+      <!-- Info Grid -->
+      <div class="grid gap-6 md:grid-cols-2">
+
+        <div class="bg-gray-800/40 p-4 rounded-lg border border-gray-700">
+          <p class="text-gray-400 text-sm">Nom</p>
+          <p class="text-xl font-semibold">{{ client.nom }}</p>
+        </div>
+
+        <div class="bg-gray-800/40 p-4 rounded-lg border border-gray-700">
+          <p class="text-gray-400 text-sm">Prénom</p>
+          <p class="text-xl font-semibold">{{ client.prenom }}</p>
+        </div>
+
+        <div class="bg-gray-800/40 p-4 rounded-lg border border-gray-700">
+          <p class="text-gray-400 text-sm">Badge RFID</p>
+          <p class="text-lg font-medium">{{ client.badgeRFID }}</p>
+        </div>
+
+        <div class="bg-gray-800/40 p-4 rounded-lg border border-gray-700">
+          <p class="text-gray-400 text-sm">Solde actuel</p>
+          <p class="text-3xl font-bold text-green-400">{{ client.solde }} DH</p>
+        </div>
+
       </div>
 
-      <div>
-        <p class="text-gray-400">Solde actuel</p>
-        <p class="text-3xl font-bold text-green-400">{{ client.solde }} DH</p>
-      </div>
+      <!-- Edit Form -->
+      @if (editMode) {
+        <div class="bg-gray-800/40 p-4 rounded-lg border border-gray-700 mt-6">
+
+          <h3 class="text-lg font-semibold mb-4">Modifier mes informations</h3>
+
+          <form (ngSubmit)="save()" class="space-y-4">
+
+            <div>
+              <label class="text-gray-400 text-sm">Nom</label>
+              <input 
+                [(ngModel)]="form.nom"
+                name="nom"
+                class="w-full p-2 rounded bg-gray-900 border border-gray-700 text-white"
+              >
+            </div>
+
+            <div>
+              <label class="text-gray-400 text-sm">Prénom</label>
+              <input 
+                [(ngModel)]="form.prenom"
+                name="prenom"
+                class="w-full p-2 rounded bg-gray-900 border border-gray-700 text-white"
+              >
+            </div>
+
+            <div class="flex gap-3">
+              <button 
+                type="submit"
+                class="px-4 py-2 bg-green-600 hover:bg-green-700 rounded-lg text-white text-sm">
+                Enregistrer
+              </button>
+
+              <button 
+                type="button"
+                class="px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg text-white text-sm"
+                (click)="editMode = false">
+                Annuler
+              </button>
+            </div>
+
+          </form>
+
+        </div>
+      }
 
     </div>
   }

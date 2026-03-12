@@ -17,7 +17,13 @@ export const loadClientFailure = createAction(
 
 export const loadHistorique = createAction(
   '[Client] Load Historique',
-  props<{ clientId: number; start: string; end: string; pageable: any }>()
+  props<{
+    clientId: number;
+    start: string;
+    end: string;
+    pageable: { page: number; size: number };
+    minQuantite?: number;   
+  }>()
 );
 
 export const loadHistoriqueSuccess = createAction(
@@ -41,5 +47,20 @@ export const rechargeSoldeSuccess = createAction(
 
 export const rechargeSoldeFailure = createAction(
   '[Client] Recharge Solde Failure',
+  props<{ error: string }>()
+);
+
+export const updateClientName = createAction(
+  '[Client] Update Name',
+  props<{ id: number; nom: string; prenom: string }>()
+);
+
+export const updateClientNameSuccess = createAction(
+  '[Client] Update Name Success',
+  props<{ nom: string; prenom: string }>()
+);
+
+export const updateClientNameFailure = createAction(
+  '[Client] Update Name Failure',
   props<{ error: string }>()
 );

@@ -1,6 +1,9 @@
 <div class="p-6 text-white">
 
-  <h2 class="text-3xl font-bold mb-6">Recharger le solde</h2>
+  <div class="mb-6">
+    <h2 class="text-3xl font-bold">Recharger le solde</h2>
+    <p class="text-gray-400 text-sm mt-1">Ajoutez du crédit à votre compte client.</p>
+  </div>
 
   @if ((loading$ | async)) {
     <p class="text-gray-300">Chargement...</p>
@@ -12,31 +15,31 @@
 
   @if ((client$ | async); as client) {
 
-    <div class="bg-gray-800 p-5 rounded-lg border border-gray-700 mb-6">
-      <p class="text-gray-400">Solde actuel</p>
+    <div class="bg-gray-900 p-5 rounded-lg border border-gray-700 mb-6">
+      <p class="text-gray-400 text-sm">Solde actuel</p>
       <p class="text-3xl font-bold text-green-400">{{ client.solde }} DH</p>
     </div>
 
     <!-- Formulaire -->
-    <div class="bg-gray-800 p-5 rounded-lg border border-gray-700">
+    <div class="bg-gray-900 p-5 rounded-lg border border-gray-700">
 
-      <label class="text-gray-300">Montant à recharger</label>
+      <label class="block text-sm text-gray-300 mb-1">Montant à recharger</label>
       <input
         type="number"
         [(ngModel)]="montant"
-        class="w-full mt-2 p-2 rounded bg-gray-700 text-white border border-gray-600"
+        class="w-full mt-1 px-3 py-2 rounded-md bg-gray-950 text-white border border-gray-700 text-sm focus:outline-none focus:border-green-400"
         placeholder="Ex: 100"
       />
 
       <button
         (click)="onRecharge()"
-        class="mt-4 w-full bg-green-600 hover:bg-green-700 p-3 rounded font-bold"
+        class="mt-4 w-full bg-green-600 hover:bg-green-700 px-3 py-2 rounded-md text-sm font-semibold"
       >
         Recharger
       </button>
 
       @if (successMessage) {
-        <p class="text-green-400 mt-4">{{ successMessage }}</p>
+        <p class="text-green-400 mt-4 text-sm">{{ successMessage }}</p>
       }
     </div>
   }
