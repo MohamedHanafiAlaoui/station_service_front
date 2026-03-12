@@ -1,11 +1,11 @@
-@if ((role$ | async) === 'CLIENT') {
+@if ((role$ | async) === 'ROLE_CLIENT') {
   <app-client-navbar></app-client-navbar>
 }
 
-@if ((role$ | async) === 'EMPLOYE') {
+@if ((role$ | async) === 'ROLE_EMPLOYE') {
   <app-employe-navbar></app-employe-navbar>
 }
 
-@if ((role$ | async) === 'ADMIN') {
+@if ((role$ | async) === 'ROLE_ADMIN') {
   <app-admin-navbar></app-admin-navbar>
 }

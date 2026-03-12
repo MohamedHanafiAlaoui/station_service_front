@@ -1,13 +1,16 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import * as ClientActions from './client.actions';
 import { catchError, map, mergeMap, of } from 'rxjs';
-import { ClientService } from '../../../core/services/client'; // ✔ هذا هو الصحيح
+import { ClientService } from '../../../core/services/client';
+import { UserService } from '../../../core/services/user';
 
 @Injectable()
 export class ClientEffects {
 
-  constructor(private actions$: Actions, private client: ClientService) {}
+  private readonly actions$ = inject(Actions);
+  private readonly client = inject(ClientService);
+  private readonly userService = inject(UserService);
 
   loadClient$ = createEffect(() =>
     this.actions$.pipe(
@@ -44,4 +47,22 @@ export class ClientEffects {
       )
     )
   );
+
+
+  updateClientName$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(ClientActions.updateClientName),
+      mergeMap(({ id, nom, prenom }) =>
+        this.userService.updateNomPrenom(id, { nom, prenom }).pipe(
+          map(() => ClientActions.updateClientNameSuccess({ nom, prenom })),
+          catchError(err =>
+            of(ClientActions.updateClientNameFailure({ error: err.message }))
+          )
+        )
+      )
+    )
+  );
+  
+  
+  
 }

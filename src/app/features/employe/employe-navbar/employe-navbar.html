@@ -1,9 +1,101 @@
-<nav class="bg-blue-900 text-white px-6 py-4 flex items-center justify-between shadow-lg">
-  <div class="text-2xl font-bold">Employé</div>
+<nav class="bg-blue-950 text-white px-6 py-3 flex items-center justify-between shadow-lg border-b border-blue-800">
+  <!-- Logo / Title -->
+  <div class="flex items-center gap-3">
+    <span class="inline-flex items-center justify-center w-9 h-9 rounded-full bg-blue-900 text-sm font-semibold">
+      EM
+    </span>
+    <div class="flex flex-col">
+      <span class="text-lg font-semibold tracking-tight">Employé</span>
+      <span class="text-xs text-blue-200">Interface de caisse</span>
+    </div>
+  </div>
 
-  <div class="flex space-x-6">
-    <a routerLink="/employe" routerLinkActive="active-link">Dashboard</a>
-    <a routerLink="/employe/ventes" routerLinkActive="active-link">Ventes</a>
-    <a routerLink="/employe/pompes" routerLinkActive="active-link">Pompes</a>
+  <!-- Links + Logout -->
+  <div class="flex items-center gap-4">
+    <!-- Desktop links -->
+    <div class="hidden md:flex items-center gap-4 text-sm">
+      <a
+        routerLink="/employe"
+        routerLinkActive="border-b-2 border-blue-400 text-white"
+        class="pb-1 px-1 text-blue-100/80 hover:text-white hover:border-b-2 hover:border-blue-500 transition"
+      >
+        Dashboard
+      </a>
+      <a
+        routerLink="/employe/ventes"
+        routerLinkActive="border-b-2 border-blue-400 text-white"
+        class="pb-1 px-1 text-blue-100/80 hover:text-white hover:border-b-2 hover:border-blue-500 transition"
+      >
+        Ventes
+      </a>
+      <a
+        routerLink="/employe/pompes"
+        routerLinkActive="border-b-2 border-blue-400 text-white"
+        class="pb-1 px-1 text-blue-100/80 hover:text-white hover:border-b-2 hover:border-blue-500 transition"
+      >
+        Pompes
+      </a>
+    </div>
+
+    <!-- Mobile menu toggle -->
+    <button
+      type="button"
+      class="md:hidden inline-flex items-center justify-center w-9 h-9 rounded-md border border-blue-700 bg-blue-950 hover:bg-blue-900 transition"
+      (click)="toggleMenu()"
+      aria-label="Toggle navigation"
+    >
+      <span class="w-4 h-0.5 bg-blue-100 block mb-1"></span>
+      <span class="w-4 h-0.5 bg-blue-100 block mb-1"></span>
+      <span class="w-4 h-0.5 bg-blue-100 block"></span>
+    </button>
+
+    <!-- Desktop logout -->
+    <button
+      type="button"
+      (click)="logout()"
+      class="hidden md:inline-flex px-4 py-2 rounded-md bg-blue-900 border border-blue-700 text-sm hover:bg-blue-800 transition"
+    >
+      Logout
+    </button>
   </div>
 </nav>
+
+<!-- Mobile dropdown menu -->
+@if (isMenuOpen) {
+  <div class="md:hidden bg-blue-950 border-b border-blue-800 px-6 pb-3 space-y-2">
+    <nav class="flex flex-col gap-2 text-sm">
+      <a
+        routerLink="/employe"
+        routerLinkActive="text-white"
+        class="text-blue-100/80 hover:text-white"
+        (click)="isMenuOpen = false"
+      >
+        Dashboard
+      </a>
+      <a
+        routerLink="/employe/ventes"
+        routerLinkActive="text-white"
+        class="text-blue-100/80 hover:text-white"
+        (click)="isMenuOpen = false"
+      >
+        Ventes
+      </a>
+      <a
+        routerLink="/employe/pompes"
+        routerLinkActive="text-white"
+        class="text-blue-100/80 hover:text-white"
+        (click)="isMenuOpen = false"
+      >
+        Pompes
+      </a>
+    </nav>
+
+    <button
+      type="button"
+      (click)="logout()"
+      class="mt-3 w-full px-4 py-2 rounded-md bg-blue-900 border border-blue-700 text-sm hover:bg-blue-800 transition"
+    >
+      Logout
+    </button>
+  </div>
+}

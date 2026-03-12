@@ -56,5 +56,21 @@ export const clientReducer = createReducer(
     ...state,
     loading: false,
     error
-  }))
+  })),
+
+
+  on(ClientActions.updateClientNameSuccess, (state, { nom, prenom }) => ({
+    ...state,
+    client: state.client
+      ? {
+          ...state.client,   
+          nom,
+          prenom
+        }
+      : null,
+    loading: false,
+    error: null
+  })),
+  
+  
 );
