@@ -6,10 +6,12 @@ export class Api {
   public static readonly REGISTER = `${Api.AUTH}/register`;
 
   public static readonly USERS = `${Api.BASE}/users`;
+  public static readonly UPDATE_NAME = (id: number) => `${Api.AUTH}/update/${id}`;
 
   public static readonly CLIENTS = `${Api.BASE}/clients`;
 
   public static readonly STATIONS = `${Api.BASE}/stations`;
+  public static readonly PUBLIC_STATIONS = `${Api.STATIONS}/public`;
 
   public static readonly POMPES = `${Api.BASE}/pompes`;
 
