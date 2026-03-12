@@ -1,4 +1,6 @@
 export interface AuthResponse {
   token: string;
-  role: 'ADMIN' | 'EMPLOYE' | 'CLIENT';
+  type: string;
+  roles?: string;
+  id: number;
 }
