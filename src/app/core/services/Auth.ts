@@ -27,10 +27,14 @@ export class AuthService {
     ).pipe(
       tap(res => {
         localStorage.setItem(this.TOKEN_KEY, res.token);
-        localStorage.setItem(this.ROLE_KEY, res.role);
 
-        
-        this.roleSubject.next(res.role);
+        const rawRole = res.roles;
+        const normalizedRole = rawRole?.startsWith('ROLE_')
+          ? rawRole
+          : `ROLE_${rawRole}`;
+
+        localStorage.setItem(this.ROLE_KEY, normalizedRole);
+        this.roleSubject.next(normalizedRole);
       }),
       catchError(err => throwError(() => this.errorService.getMessage(err)))
     );
@@ -58,7 +62,19 @@ export class AuthService {
 
 
   getRole(): string | null {
-    return localStorage.getItem(this.ROLE_KEY);
+    const rawRole = localStorage.getItem(this.ROLE_KEY);
+
+    if (!rawRole) {
+      return null;
+    }
+
+    if (rawRole.startsWith('ROLE_')) {
+      return rawRole;
+    }
+
+    const normalizedRole = `ROLE_${rawRole}`;
+    localStorage.setItem(this.ROLE_KEY, normalizedRole);
+    return normalizedRole;
   }
 
   isLoggedIn() {
@@ -77,6 +93,24 @@ export class AuthService {
   }
 }
 
-  
+getUser(): any | null {
+  const token = localStorage.getItem(this.TOKEN_KEY);
+  if (!token) return null;
+
+  try {
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    return payload;
+  } catch (e) {
+    return null;
+  }
+}
+
+getUsername(): string | null {
+  const user = this.getUser();
+  return user?.username || user?.sub || null;
+}
+
+
+
 
 }
