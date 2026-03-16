@@ -20,8 +20,8 @@ export const routes: Routes = [
       import('./features/admin/admin.routes').then(m => m.ADMIN_ROUTES),
 
     loadComponent: () =>
-      import('./shared/components/layout/layout')
-        .then(m => m.Layout),
+      import('./features/admin/admin-layout/adminlayout/adminlayout')
+        .then(m => m.Adminlayout),
   },
 
   {

@@ -1,8 +1,8 @@
-import { User } from './user';
-
-export interface Client {
+export interface ClientDto {
   id?: number;
-  user: User;
-  solde: number;
+  nom: string;
+  prenom: string;
+  username: string;
   badgeRFID: string;
+  solde?: number;
 }
