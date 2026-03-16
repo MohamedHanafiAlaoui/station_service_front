@@ -3,11 +3,11 @@
   <!-- Header -->
   <div class="mb-8">
     <h2 class="text-3xl font-bold tracking-tight">Historique des opérations</h2>
-    <p class="text-gray-400 text-sm mt-1">Liste de vos transactions récentes.</p>
+    <p class="text-indigo-400 text-sm mt-1">Liste de vos transactions récentes.</p>
   </div>
 
   <!-- Filters -->
-  <div class="bg-gray-900 p-6 rounded-xl border border-gray-700 shadow-lg mb-8">
+  <div class="bg-[#1e1b4b] p-6 rounded-xl border border-gray-700 shadow-lg mb-8">
     <h3 class="text-lg font-semibold mb-4 flex items-center gap-2">
       <i class="fa-solid fa-filter text-green-400"></i>
       Filtrer les opérations
@@ -16,28 +16,28 @@
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
 
       <div class="flex flex-col">
-        <label class="text-gray-400 text-sm mb-1">Date début</label>
+        <label class="text-indigo-400 text-sm mb-1">Date début</label>
         <input
           type="datetime-local"
-          class="w-full bg-gray-800 border border-gray-700 rounded-lg p-2 text-white focus:ring-2 focus:ring-green-500 focus:border-green-500 transition"
+          class="w-full bg-indigo-900 border border-gray-700 rounded-lg p-2 text-white focus:ring-2 focus:ring-green-500 focus:border-green-500 transition"
           [(ngModel)]="filters.start"
         >
       </div>
 
       <div class="flex flex-col">
-        <label class="text-gray-400 text-sm mb-1">Date fin</label>
+        <label class="text-indigo-400 text-sm mb-1">Date fin</label>
         <input
           type="datetime-local"
-          class="w-full bg-gray-800 border border-gray-700 rounded-lg p-2 text-white focus:ring-2 focus:ring-green-500 focus:border-green-500 transition"
+          class="w-full bg-indigo-900 border border-gray-700 rounded-lg p-2 text-white focus:ring-2 focus:ring-green-500 focus:border-green-500 transition"
           [(ngModel)]="filters.end"
         >
       </div>
 
       <div class="flex flex-col">
-        <label class="text-gray-400 text-sm mb-1">Quantité min</label>
+        <label class="text-indigo-400 text-sm mb-1">Quantité min</label>
         <input
           type="number"
-          class="w-full bg-gray-800 border border-gray-700 rounded-lg p-2 text-white focus:ring-2 focus:ring-green-500 focus:border-green-500 transition"
+          class="w-full bg-indigo-900 border border-gray-700 rounded-lg p-2 text-white focus:ring-2 focus:ring-green-500 focus:border-green-500 transition"
           [(ngModel)]="filters.minQuantite"
         >
       </div>
@@ -73,38 +73,38 @@
   @if ((historique$ | async); as hist) {
 
     @if (hist.length === 0) {
-      <p class="text-gray-400">Aucune opération trouvée.</p>
+      <p class="text-indigo-400">Aucune opération trouvée.</p>
     } @else {
 
       <div class="space-y-4">
 
         @for (item of hist; track item.id) {
           <div
-            class="bg-gray-900 p-5 rounded-xl border border-gray-700 shadow-md hover:shadow-green-500/10 hover:border-green-500/40 transition cursor-pointer"
+            class="bg-[#1e1b4b] p-5 rounded-xl border border-gray-700 shadow-md hover:shadow-green-500/10 hover:border-green-500/40 transition cursor-pointer"
           >
 
             <div class="flex items-center justify-between mb-3">
-              <div class="text-sm text-gray-400">Montant payé</div>
+              <div class="text-sm text-indigo-400">Montant payé</div>
               <div class="text-xl font-bold text-green-400">{{ item.montantPaye }} DH</div>
             </div>
 
             <div class="grid grid-cols-2 gap-4 text-sm">
 
-              <div class="bg-gray-800/40 p-3 rounded-lg border border-gray-700 flex justify-between">
-                <span class="text-gray-400">Quantité</span>
+              <div class="bg-indigo-900/40 p-3 rounded-lg border border-gray-700 flex justify-between">
+                <span class="text-indigo-400">Quantité</span>
                 <span class="font-medium">{{ item.quantite }} L</span>
               </div>
 
-              <div class="bg-gray-800/40 p-3 rounded-lg border border-gray-700 flex justify-between">
-                <span class="text-gray-400">Prix unitaire</span>
+              <div class="bg-indigo-900/40 p-3 rounded-lg border border-gray-700 flex justify-between">
+                <span class="text-indigo-400">Prix unitaire</span>
                 <span class="font-medium">{{ item.prixUnitaire }} DH</span>
               </div>
 
-              <div class="bg-gray-800/40 p-3 rounded-lg border border-gray-700 flex justify-between col-span-2">
-                <span class="text-gray-400">Pompe</span>
+              <div class="bg-indigo-900/40 p-3 rounded-lg border border-gray-700 flex justify-between col-span-2">
+                <span class="text-indigo-400">Pompe</span>
                 <span class="font-medium">{{ item.pompeId }}</span>
               </div>
-              <div class="flex items-center justify-between text-sm text-gray-400 mb-2">
+              <div class="flex items-center justify-between text-sm text-indigo-400 mb-2">
                 <span>Date</span>
                 <span class="text-gray-300">{{ item.dateOperation }}</span>
               </div>

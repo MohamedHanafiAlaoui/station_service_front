@@ -3,7 +3,9 @@ export interface User {
   username: string;
   nom: string;
   prenom: string;
-  password?: string; 
+  actif?: boolean;
   role: 'ADMIN' | 'EMPLOYE' | 'CLIENT';
+  stationId?: number;
+  password?: string;
 }
 

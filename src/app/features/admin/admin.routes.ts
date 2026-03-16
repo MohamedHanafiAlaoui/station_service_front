@@ -5,12 +5,16 @@ import { Pompes } from './pompes/pompes';
 import { Clients } from './clients/clients';
 import { Stations } from './stations/stations';
 import { Dashboard } from './dashboard/dashboard';
+import { Employes } from './employes/employes';
+import { JournalAudit } from './journal-audit/journal-audit';
 
 export const ADMIN_ROUTES: Routes = [
   { path: '', component: Dashboard },
   { path: 'stations', component: Stations },
   { path: 'clients', component: Clients },
   { path: 'pompes', component: Pompes },
+  { path: 'employes', component: Employes },
   { path: 'ventes', component: Ventes },
-  { path: 'approvisionnements', component: Approvisionnements }
+  { path: 'approvisionnements', component: Approvisionnements },
+  { path: 'journals', component: JournalAudit }
 ];

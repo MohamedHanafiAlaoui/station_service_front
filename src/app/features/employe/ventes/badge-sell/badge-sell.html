@@ -1,0 +1,64 @@
+<div class="p-8 bg-indigo-50/30 min-h-screen">
+  <div class="max-w-xl mx-auto">
+    <div class="mb-8 flex items-center justify-between">
+      <div>
+        <h1 class="text-2xl font-bold text-indigo-950">Record Badge Sale</h1>
+        <p class="text-indigo-500 mt-1">Scan client badge to process fuel transaction.</p>
+      </div>
+      <a routerLink="/employe/ventes" class="text-indigo-600 hover:text-indigo-800 font-medium text-sm flex items-center">
+        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+        Back to Sales
+      </a>
+    </div>
+
+    <div class="bg-white rounded-xl shadow-sm border border-indigo-100 overflow-hidden">
+      <!-- Success Alert -->
+      <div *ngIf="success" class="p-4 bg-green-50 border-b border-green-100 flex items-center text-green-700 text-sm">
+        <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+        Transaction successful! Fuel dispensed.
+      </div>
+
+      <!-- Error Alert -->
+      <div *ngIf="error" class="p-4 bg-red-50 border-b border-red-100 flex items-center text-red-700 text-sm">
+        <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>
+        {{ error }}
+      </div>
+
+      <div class="p-8">
+        <form [formGroup]="sellForm" (ngSubmit)="onSubmit()" class="space-y-6">
+          <div class="flex items-center justify-center p-8 bg-indigo-50 border-2 border-dashed border-indigo-200 rounded-xl mb-6">
+            <div class="text-center">
+              <div class="mx-auto w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-sm mb-4">
+                <svg class="w-8 h-8 text-indigo-600 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09A13.916 13.916 0 008 11a4 4 0 118 0c0 1.017-.07 2.019-.203 3m-2.118 6.844A21.88 21.88 0 0015.171 17m3.839 1.132c.645-2.266.99-4.659.99-7.132A8 8 0 008 4.07M3 15.364c.64-1.319 1-2.8 1-4.364 0-1.457.39-2.823 1.07-4"></path></svg>
+              </div>
+              <p class="text-indigo-950 font-medium">Ready to scan...</p>
+              <p class="text-xs text-indigo-500 mt-1">Place the badge near the reader</p>
+            </div>
+          </div>
+
+          <div class="space-y-4">
+            <label class="block text-sm font-medium text-indigo-950">Select Pump</label>
+            <select formControlName="pompeId" class="w-full bg-white border border-indigo-200 rounded-lg px-4 py-3 text-sm text-indigo-950 focus:outline-none focus:ring-2 focus:ring-indigo-500 h-12 appearance-none">
+              <option *ngFor="let pompe of pompes$ | async" [value]="pompe.id">
+                P{{ pompe.codePompe }} - {{ pompe.typeCarburant }}
+              </option>
+            </select>
+          </div>
+
+          <app-input-field label="Badge RFID Code" formControlName="badgeCode" placeholder="Enter or scan badge code"></app-input-field>
+          
+          <app-input-field label="Quantity (Liters)" formControlName="quantity" type="number" placeholder="0.00"></app-input-field>
+
+          <div class="pt-6">
+            <button type="submit" [disabled]="sellForm.invalid || loading" class="w-full py-3 bg-indigo-600 text-white rounded-lg font-bold shadow-md hover:bg-indigo-700 transition-colors disabled:opacity-50 flex items-center justify-center">
+              <span *ngIf="loading" class="mr-2">
+                <svg class="animate-spin h-5 w-5 text-white" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+              </span>
+              Process Transaction
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

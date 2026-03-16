@@ -1,1 +1,289 @@
-<p>pompes works!</p>
+<div class="animate-fade-in pb-12">
+  <!-- Page Header -->
+  <div class="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4">
+    <div>
+      <h1 class="text-3xl font-bold text-slate-800 tracking-tight">Pump Management</h1>
+      <p class="text-slate-500 mt-1">Configure fuel distribution hardware and capacities across active stations.</p>
+    </div>
+    <div class="flex gap-3">
+      <div class="relative">
+        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+          <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+        </div>
+        <input type="text" (input)="onSearch($event)" placeholder="Search by code or type..." class="pl-10 pr-4 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 w-64 shadow-sm bg-white text-slate-700">
+      </div>
+      <button (click)="openModal('create')" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors shadow-sm flex items-center gap-2">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+        Add Pump
+      </button>
+    </div>
+  </div>
+
+  <!-- Data Table Card -->
+  <div class="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden">
+    @if (isLoading) {
+      <div class="flex justify-center items-center py-20">
+        <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"></div>
+      </div>
+    } @else {
+      <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-slate-200">
+          <thead class="bg-slate-50">
+            <tr>
+              <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Pump Code / Station</th>
+              <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider hidden md:table-cell">Fuel Type &amp; Pricing</th>
+              <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Capacity &amp; Level</th>
+              <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Status</th>
+              <th scope="col" class="px-6 py-3 text-right text-xs font-semibold text-slate-500 uppercase tracking-wider">Actions</th>
+            </tr>
+          </thead>
+          <tbody class="bg-white divide-y divide-slate-200">
+            @if (filteredPompes.length === 0) {
+              <tr>
+                <td colspan="5" class="px-6 py-12 text-center text-slate-500">
+                  <svg class="w-12 h-12 text-slate-300 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v8l9-11h-7z"></path></svg>
+                  <p class="text-sm">No pumps found.</p>
+                </td>
+              </tr>
+            }
+            @for (pompe of pagedPompes; track pompe.id) {
+              <tr class="hover:bg-slate-50 transition-colors group">
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <div class="flex items-center">
+                    <div class="h-10 w-10 shrink-0 flex items-center justify-center rounded-lg bg-indigo-50 text-indigo-600 border border-indigo-100">
+                      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v8l9-11h-7z"></path></svg>
+                    </div>
+                    <div class="ml-4">
+                      <div class="text-sm font-semibold text-slate-900">{{ pompe.codePompe }}</div>
+                      <div class="text-xs text-slate-500 truncate max-w-[150px]">{{ getStationName(pompe.stationId) }}</div>
+                    </div>
+                  </div>
+                </td>
+                <td class="px-6 py-4 hidden md:table-cell">
+                  <div class="text-sm text-slate-900 font-medium">
+                    <span [class]="pompe.typeCarburant === 'ESSENCE' ? 'text-amber-600 bg-amber-50' : 'text-slate-600 bg-slate-100'"
+                          class="px-2 py-0.5 rounded-full text-xs mr-2">
+                       {{ pompe.typeCarburant }}
+                    </span>
+                  </div>
+                  <div class="text-xs text-slate-500 mt-1">{{ pompe.prixParLitre | number:'1.2-2' }} MAD/L</div>
+                </td>
+                <td class="px-6 py-4">
+                  <div class="flex items-center gap-2 mb-1">
+                    <div class="w-full bg-slate-100 rounded-full h-1.5 dark:bg-slate-200 shrink-0">
+                      <div class="bg-indigo-500 h-1.5 rounded-full" [style.width.%]="(pompe.niveauActuel / pompe.capaciteMax) * 100"></div>
+                    </div>
+                    <span class="text-xs font-medium text-slate-600 w-10">{{ (pompe.niveauActuel / pompe.capaciteMax) * 100 | number:'1.0-0' }}%</span>
+                  </div>
+                  <div class="text-[11px] text-slate-400 font-medium tracking-tight">
+                    {{ pompe.niveauActuel | number:'1.0-0' }} / {{ pompe.capaciteMax | number:'1.0-0' }} L
+                  </div>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <button (click)="toggleStatus(pompe.id, pompe.enService)"
+                          [class.bg-emerald-50]="pompe.enService" [class.text-emerald-600]="pompe.enService" [class.border-emerald-100]="pompe.enService"
+                          [class.bg-rose-50]="!pompe.enService" [class.text-rose-600]="!pompe.enService" [class.border-rose-100]="!pompe.enService"
+                          class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium border hover:opacity-80 transition-opacity">
+                    <span [class.bg-emerald-500]="pompe.enService" [class.bg-rose-500]="!pompe.enService" class="w-1.5 h-1.5 rounded-full mr-1.5"></span>
+                    {{ pompe.enService ? 'In Service' : 'Out of Service' }}
+                  </button>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                  <button (click)="openDrawer(pompe)" class="text-slate-500 hover:text-slate-800 bg-slate-50 hover:bg-slate-100 p-2 rounded-lg transition-colors inline-block mr-2" title="View Details">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+                  </button>
+                  <button (click)="openModal('edit', pompe)" class="text-indigo-600 hover:text-indigo-900 bg-indigo-50 hover:bg-indigo-100 p-2 rounded-lg transition-colors inline-block" title="Edit">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
+                  </button>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Pagination -->
+      @if (totalPages > 1) {
+        <div class="px-6 py-4 border-t border-slate-100 flex items-center justify-between bg-slate-50">
+          <p class="text-sm text-slate-500">
+            Showing {{ (currentPage - 1) * pageSize + 1 }}–{{ currentPage * pageSize > filteredPompes.length ? filteredPompes.length : currentPage * pageSize }} of {{ filteredPompes.length }} pumps
+          </p>
+          <div class="flex items-center gap-1">
+            <button (click)="goToPage(currentPage - 1)" [disabled]="currentPage === 1"
+                    class="p-2 rounded-lg text-slate-500 hover:bg-slate-200 disabled:opacity-40 disabled:cursor-not-allowed transition-colors">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+            </button>
+            @for (page of pageNumbers; track page) {
+              <button (click)="goToPage(page)"
+                      [class.bg-indigo-600]="page === currentPage" [class.text-white]="page === currentPage"
+                      [class.text-slate-600]="page !== currentPage"
+                      class="w-8 h-8 rounded-lg text-sm font-medium transition-colors hover:bg-slate-200">
+                {{ page }}
+              </button>
+            }
+            <button (click)="goToPage(currentPage + 1)" [disabled]="currentPage === totalPages"
+                    class="p-2 rounded-lg text-slate-500 hover:bg-slate-200 disabled:opacity-40 disabled:cursor-not-allowed transition-colors">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+            </button>
+          </div>
+        </div>
+      }
+    }
+  </div>
+
+  <!-- Detail Drawer -->
+  @if (isDrawerOpen && selectedPompe) {
+    <div class="fixed inset-0 z-40 flex justify-end" (click)="closeDrawer()">
+      <div class="fixed inset-0 bg-slate-900/30 backdrop-blur-sm"></div>
+      <div class="relative z-50 w-full max-w-md h-full bg-white shadow-2xl flex flex-col" (click)="$event.stopPropagation()">
+        <div class="px-6 py-5 border-b border-slate-100 flex justify-between items-center bg-slate-50 shrink-0">
+          <h3 class="text-lg font-bold text-slate-800">Pump Details</h3>
+          <button (click)="closeDrawer()" class="text-slate-400 hover:text-slate-600 hover:bg-slate-200 p-1.5 rounded-lg transition-colors">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+          </button>
+        </div>
+        <div class="flex-1 overflow-y-auto p-6">
+          <div class="flex items-center gap-4 mb-6">
+            <div class="w-16 h-16 rounded-2xl bg-indigo-100 flex items-center justify-center text-indigo-600 shrink-0">
+              <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v8l9-11h-7z"></path></svg>
+            </div>
+            <div>
+              <h2 class="text-xl font-bold text-slate-900">{{ selectedPompe.codePompe }}</h2>
+              <p class="text-sm text-slate-500">{{ getStationName(selectedPompe.stationId) }}</p>
+            </div>
+          </div>
+          <div class="space-y-4">
+            <div class="bg-slate-50 rounded-xl p-4">
+              <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Fuel Type</p>
+              <span [class]="selectedPompe.typeCarburant === 'ESSENCE' ? 'bg-amber-100 text-amber-700' : 'bg-slate-200 text-slate-700'"
+                    class="inline-flex items-center px-3 py-1 rounded-full text-sm font-semibold">
+                {{ selectedPompe.typeCarburant }}
+              </span>
+            </div>
+            <div class="bg-slate-50 rounded-xl p-4">
+              <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3">Fuel Level</p>
+              <div class="flex items-center gap-3 mb-2">
+                <div class="flex-1 bg-slate-200 rounded-full h-3">
+                  <div class="bg-indigo-500 h-3 rounded-full transition-all" [style.width.%]="(selectedPompe.niveauActuel / selectedPompe.capaciteMax) * 100"></div>
+                </div>
+                <span class="text-sm font-bold text-slate-700 w-12">{{ (selectedPompe.niveauActuel / selectedPompe.capaciteMax) * 100 | number:'1.0-0' }}%</span>
+              </div>
+              <p class="text-sm text-slate-600 font-medium">{{ selectedPompe.niveauActuel | number:'1.0-0' }} / {{ selectedPompe.capaciteMax | number:'1.0-0' }} Liters</p>
+            </div>
+            <div class="grid grid-cols-2 gap-3">
+              <div class="bg-slate-50 rounded-xl p-4">
+                <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Price</p>
+                <p class="text-lg font-bold text-slate-800">{{ selectedPompe.prixParLitre | number:'1.2-2' }} <span class="text-sm font-normal text-slate-500">MAD/L</span></p>
+              </div>
+              <div class="bg-slate-50 rounded-xl p-4">
+                <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Status</p>
+                <span [class.bg-emerald-100]="selectedPompe.enService" [class.text-emerald-700]="selectedPompe.enService"
+                      [class.bg-rose-100]="!selectedPompe.enService" [class.text-rose-700]="!selectedPompe.enService"
+                      class="inline-flex items-center px-2 py-1 rounded-full text-xs font-semibold">
+                  <span [class.bg-emerald-500]="selectedPompe.enService" [class.bg-rose-500]="!selectedPompe.enService" class="w-1.5 h-1.5 rounded-full mr-1.5"></span>
+                  {{ selectedPompe.enService ? 'In Service' : 'Out of Service' }}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="px-6 py-4 border-t border-slate-100 bg-slate-50 shrink-0 flex gap-3">
+          <button (click)="openModal('edit', selectedPompe); closeDrawer()" class="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2.5 rounded-lg text-sm font-medium transition-colors">
+            Edit Pump
+          </button>
+          <button (click)="closeDrawer()" class="px-4 py-2.5 rounded-lg text-sm font-medium text-slate-600 border border-slate-200 hover:bg-slate-100 transition-colors">
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- Create/Edit Modal overlay-->
+  @if (isModalOpen) {
+    <div class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 backdrop-blur-sm transition-opacity">
+      <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg mx-4 overflow-hidden animate-slide-up">
+
+        <div class="px-6 py-4 border-b border-slate-100 flex justify-between items-center bg-slate-50">
+          <h3 class="text-lg font-bold text-slate-800 flex items-center gap-2">
+            <div class="w-8 h-8 rounded-lg bg-indigo-100 text-indigo-600 flex items-center justify-center">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v8l9-11h-7z"></path></svg>
+            </div>
+            {{ modalMode === 'create' ? 'Add New Pump' : 'Edit Pump Details' }}
+          </h3>
+          <button (click)="closeModal()" class="text-slate-400 hover:text-slate-600 hover:bg-slate-200 p-1.5 rounded-lg transition-colors">
+             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+          </button>
+        </div>
+
+        <form [formGroup]="pompeForm" (ngSubmit)="onSubmit()" class="p-6">
+          <div class="space-y-4">
+
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm font-medium text-slate-700 mb-1">Pump Code <span class="text-rose-500">*</span></label>
+                <input formControlName="codePompe" type="text" class="w-full border border-slate-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-slate-800 uppercase" placeholder="e.g. P1-A">
+                @if (pompeForm.get('codePompe')?.touched && pompeForm.get('codePompe')?.invalid) {
+                  <p class="text-rose-500 text-xs mt-1">Expected format: 3-15 chars (A-Z, 0-9, -_).</p>
+                }
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-slate-700 mb-1">Fuel Type <span class="text-rose-500">*</span></label>
+                <select formControlName="typeCarburant" class="w-full border border-slate-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-slate-800 bg-white">
+                  <option value="ESSENCE">ESSENCE</option>
+                  <option value="DIESEL">DIESEL</option>
+                </select>
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-slate-700 mb-1">Assigned Station <span class="text-rose-500">*</span></label>
+              <select formControlName="stationId" class="w-full border border-slate-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-slate-800 bg-white">
+                <option value="" disabled selected>Select a Station</option>
+                @for (station of stations; track station.id) {
+                  <option [value]="station.id">{{ station.nom }} (ST-{{ station.id }})</option>
+                }
+              </select>
+              @if (pompeForm.get('stationId')?.touched && pompeForm.get('stationId')?.invalid) {
+                <p class="text-rose-500 text-xs mt-1">Station assignment is required.</p>
+              }
+            </div>
+
+            <div class="grid grid-cols-3 gap-4">
+              <div>
+                <label class="block text-sm font-medium text-slate-700 mb-1">Max Capacity (L)</label>
+                <input formControlName="capaciteMax" type="number" class="w-full border border-slate-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-slate-800" min="1">
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-slate-700 mb-1">Current Level (L)</label>
+                <input formControlName="niveauActuel" type="number" class="w-full border border-slate-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-slate-800" min="0">
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-slate-700 mb-1">Price/L (MAD)</label>
+                <input formControlName="prixParLitre" type="number" step="0.01" class="w-full border border-slate-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-slate-800" min="0.01">
+              </div>
+            </div>
+
+            <div class="flex items-center gap-3 pt-2">
+              <label class="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" formControlName="enService" class="sr-only peer">
+                <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-500"></div>
+                <span class="ml-3 text-sm font-medium text-slate-700">Pump is In Service</span>
+              </label>
+            </div>
+
+          </div>
+
+          <div class="mt-8 flex justify-end gap-3 pt-4 border-t border-slate-100">
+            <button type="button" (click)="closeModal()" class="px-5 py-2.5 rounded-lg text-sm font-medium text-slate-600 bg-white border border-slate-200 hover:bg-slate-50 transition-colors">
+              Cancel
+            </button>
+            <button type="submit" [disabled]="pompeForm.invalid" class="px-5 py-2.5 rounded-lg text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors shadow-sm">
+              {{ modalMode === 'create' ? 'Add Pump' : 'Save Changes' }}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  }
+</div>

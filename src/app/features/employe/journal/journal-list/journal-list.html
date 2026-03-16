@@ -1,0 +1,52 @@
+<div class="p-8 bg-indigo-50/30 min-h-screen">
+  <div class="mb-8 flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4">
+    <div>
+      <h1 class="text-2xl font-semibold text-indigo-950">Station Audit Journal</h1>
+      <p class="text-sm text-indigo-500 mt-1">Review operational events and activity logs for your station.</p>
+    </div>
+
+    <!-- Filter Form -->
+    <form [formGroup]="filterForm" (ngSubmit)="onFilter()" class="flex flex-col sm:flex-row gap-3 items-end">
+      <app-date-range-picker
+        label="Date Range"
+        startControlName="startDate"
+        endControlName="endDate">
+      </app-date-range-picker>
+      
+      <button type="submit" [disabled]="loading$ | async" class="px-4 py-2 bg-indigo-600 border border-transparent rounded-md shadow-sm text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors disabled:opacity-50 h-10">
+        Apply Filter
+      </button>
+    </form>
+  </div>
+
+  <ng-container *ngIf="loading$ | async">
+    <app-loading-spinner></app-loading-spinner>
+  </ng-container>
+
+  <ng-container *ngIf="error$ | async as error">
+    <div class="bg-red-50 border-l-4 border-red-400 p-4 mb-8">
+      <div class="flex">
+        <div class="ml-3">
+          <p class="text-sm text-red-700">
+            Error loading audit journal: {{ error }}
+          </p>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+
+  <ng-container *ngIf="!(loading$ | async) && !(error$ | async)">
+    <div *ngIf="journals$ | async as journals">
+      <app-table 
+        [columns]="tableColumns" 
+        [data]="getMappedData(journals)">
+      </app-table>
+
+      <!-- Minimal pagination info mock -->
+      <div *ngIf="pagination$ | async as pg" class="mt-4 flex justify-between items-center text-sm text-indigo-500 px-2" [class.hidden]="journals.length === 0">
+        <span>Showing results</span>
+        <span>Total records: {{ pg.totalElements }}</span>
+      </div>
+    </div>
+  </ng-container>
+</div>

@@ -2,7 +2,7 @@
 
   <div class="mb-6">
     <h2 class="text-3xl font-bold">Tableau de bord</h2>
-    <p class="text-gray-400 text-sm mt-1">Résumé de votre compte et des stations disponibles.</p>
+    <p class="text-indigo-400 text-sm mt-1">Résumé de votre compte et des stations disponibles.</p>
   </div>
 
   @if ((loading$ | async)) {
@@ -17,9 +17,9 @@
 
   @if ((stations$ | async); as stations) {
     @if (stations.length === 0) {
-      <p class="text-gray-400 mb-6">Aucune station trouvée.</p>
+      <p class="text-indigo-400 mb-6">Aucune station trouvée.</p>
     } @else {
-      <div class="bg-gray-900 border border-gray-700 rounded-lg overflow-hidden mb-6">
+      <div class="bg-[#1e1b4b] border border-gray-700 rounded-lg overflow-hidden mb-6">
         <div class="p-4 border-b border-gray-700">
           <p class="text-gray-300 font-semibold">Carte des stations</p>
         </div>
@@ -31,7 +31,7 @@
       @if ((randomStations$ | async); as randomStations) {
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
           @for (s of randomStations; track s.id) {
-            <div class="bg-gray-800 p-4 rounded-lg border border-gray-700">
+            <div class="bg-indigo-900 p-4 rounded-lg border border-gray-700">
               <p class="text-lg font-semibold flex items-center gap-2">
                 <fa-icon [icon]="faGasPump"></fa-icon>
                 <span>{{ s.nom }}</span>
@@ -53,22 +53,22 @@
 
   @if ((historique$ | async); as hist) {
     @if (hist.length === 0) {
-      <p class="text-gray-400">Aucune opération trouvée.</p>
+      <p class="text-indigo-400">Aucune opération trouvée.</p>
     } @else {
       <div class="space-y-3">
         @for (item of hist; track item.id) {
-          <div class="bg-gray-900 p-4 rounded-lg border border-gray-700">
+          <div class="bg-[#1e1b4b] p-4 rounded-lg border border-gray-700">
             <div class="flex items-center justify-between">
               <p class="text-gray-300 text-sm">Montant payé</p>
               <p class="font-bold text-green-400">{{ item.montantPaye }} DH</p>
             </div>
             <div class="mt-2 grid grid-cols-2 gap-2 text-sm">
               <div class="flex justify-between">
-                <span class="text-gray-400">Quantité</span>
+                <span class="text-indigo-400">Quantité</span>
                 <span>{{ item.quantite }} L</span>
               </div>
               <div class="flex justify-between">
-                <span class="text-gray-400">Pompe</span>
+                <span class="text-indigo-400">Pompe</span>
                 <span>{{ item.pompeId }}</span>
               </div>
             </div>

@@ -1,10 +1,17 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, tap, catchError, throwError } from 'rxjs';
+import { BehaviorSubject, Observable, tap, catchError, throwError } from 'rxjs';
 import { AuthResponse } from '../models/auth-response';
 import { RegisterRequest } from '../models/register-request';
 import { Api } from '../api/api';
 import { ErrorService } from './error-service';
+
+export interface EmployeDto {
+  id: number;
+  stationId: number | null;
+  nom: string;
+  prenom: string;
+}
 
 @Injectable({
   providedIn: 'root'
@@ -45,6 +52,16 @@ export class AuthService {
     return this.http.post(Api.REGISTER, data).pipe(
       catchError(err => throwError(() => this.errorService.getMessage(err)))
     );
+  }
+
+  registerEmploye(data: any) {
+    return this.http.post(Api.REGISTER_EMPLOYE, data).pipe(
+      catchError(err => throwError(() => this.errorService.getMessage(err)))
+    );
+  }
+
+  getAllEmployes(): Observable<EmployeDto[]> {
+    return this.http.get<EmployeDto[]>(Api.EMPLOYES);
   }
 
 
@@ -113,4 +130,4 @@ getUsername(): string | null {
 
 
 
-}
+}

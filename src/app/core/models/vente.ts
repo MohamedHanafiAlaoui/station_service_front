@@ -1,5 +1,5 @@
 import { Pompe } from './pompe';
-import { Client } from './client';
+import { ClientDto } from './client';
 
 export interface Vente {
   id?: number;
@@ -7,5 +7,5 @@ export interface Vente {
   quantite: number;
   montant: number;
   pompe: Pompe;
-  client: Client;
+  client: ClientDto;
 }

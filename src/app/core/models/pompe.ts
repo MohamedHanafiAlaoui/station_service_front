@@ -1,8 +1,10 @@
-import { Station } from './station';
-
 export interface Pompe {
   id?: number;
-  numero: string;
+  codePompe: string;
   typeCarburant: 'ESSENCE' | 'DIESEL';
-  station: Station;
+  capaciteMax: number;
+  niveauActuel: number;
+  prixParLitre: number;
+  enService: boolean;
+  stationId: number;
 }
