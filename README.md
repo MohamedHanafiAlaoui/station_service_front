@@ -1,59 +1,104 @@
-# StationService
+# ⛽ Station Service — Frontend
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.0.
+Application web Angular pour la gestion de stations-service, construite avec Angular 21, NgRx et TailwindCSS.
 
-## Development server
+## 🏗️ Stack Technologique
 
-To start a local development server, run:
+| Technologie | Version | Rôle |
+|---|---|---|
+| Angular | 21 | Framework frontend |
+| NgRx | 21 | State management |
+| TailwindCSS | 4 | Styling |
+| FontAwesome | 7 | Icônes |
+| Leaflet | 1.9 | Carte géographique |
+| SweetAlert2 | 11 | Alertes et confirmations |
 
-```bash
-ng serve
-```
+## 📋 Pré-requis
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+- Node.js 20+
+- npm 11+
+- Backend Spring Boot en cours d'exécution sur `http://localhost:8080`
 
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
+## 🚀 Installation & Démarrage
 
 ```bash
-ng build
+# Cloner le dépôt
+git clone <url-du-repo>
+cd station-service
+
+# Installer les dépendances
+npm install
+
+# Démarrer le serveur de développement
+npm start
+# → http://localhost:4200
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+## 🏗️ Build de Production
 
 ```bash
-ng test
+npm run build
+# Les fichiers seront générés dans dist/station-service/browser/
 ```
 
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
+## 🐳 Docker
 
 ```bash
-ng e2e
+# Construire l'image Docker
+docker build -t station-service-front .
+
+# Lancer le conteneur
+docker run -p 80:80 station-service-front
+# → http://localhost
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+## 📁 Structure du Projet
 
-## Additional Resources
+```
+src/app/
+├── core/
+│   ├── guards/        # authGuard, loginRedirectGuard
+│   ├── services/      # Services HTTP (API calls)
+│   └── interceptors/  # JWT token interceptor
+├── features/
+│   ├── admin/         # Pages admin (dashboard, stations, pompes...)
+│   ├── employe/       # Pages employé
+│   ├── client/        # Pages client
+│   └── auth/          # Login / Register
+└── shared/
+    └── components/    # Composants partagés (navbar, sidebar, layout)
+```
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+## 🔐 Accès par Rôle
+
+| Rôle | Chemin | Description |
+|---|---|---|
+| `ROLE_ADMIN` | `/admin/**` | Gestion complète |
+| `ROLE_EMPLOYE` | `/employe/**` | Ventes et pompes de sa station |
+| `ROLE_CLIENT` | `/client/**` | Historique et profil personnel |
+
+## 📡 Configuration de l'API
+
+Le fichier de configuration de l'API se trouve dans `src/app/core/services/`. L'URL de base du backend est configurée dans les services Angular.
+
+## 🗺️ Pages Principales
+
+### Admin
+- `/admin/dashboard` — Statistiques et métriques globales
+- `/admin/stations` — Gestion des stations
+- `/admin/pompes` — Gestion des pompes
+- `/admin/clients` — Gestion des clients
+- `/admin/employes` — Gestion des employés
+- `/admin/ventes` — Historique des ventes
+- `/admin/approvisionnements` — Historique des approvisionnements
+- `/admin/journal-audit` — Journal d'audit
+
+### Employé
+- `/employe/station` — Détails de sa station
+- `/employe/ventes` — Ventes de sa station
+- `/employe/badge-sell` — Vente via badge RFID
+
+### Client
+- `/client` — Tableau de bord (solde)
+- `/client/historique` — Historique des achats
+- `/client/profil` — Profil et badge RFID
