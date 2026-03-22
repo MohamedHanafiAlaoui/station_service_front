@@ -5,11 +5,9 @@
       <p class="text-sm text-indigo-500 mt-1">Manage and monitor all pumps for your station.</p>
     </div>
   </div>
-
   <ng-container *ngIf="loading$ | async">
     <app-loading-spinner></app-loading-spinner>
   </ng-container>
-
   <ng-container *ngIf="error$ | async as error">
     <div class="bg-red-50 border-l-4 border-red-400 p-4 mb-8">
       <div class="flex">
@@ -21,7 +19,6 @@
       </div>
     </div>
   </ng-container>
-
   <ng-container *ngIf="!(loading$ | async) && !(error$ | async)">
     <div *ngIf="pompes$ | async as pompes">
       <app-table 
