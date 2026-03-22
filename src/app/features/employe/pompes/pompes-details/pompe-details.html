@@ -1,6 +1,5 @@
 <div class="p-8 bg-indigo-50/30 min-h-screen">
   <div class="max-w-4xl mx-auto">
-    <!-- Header -->
     <div class="mb-8 flex items-center justify-between">
       <div>
         <h1 class="text-2xl font-bold text-indigo-950">Pump Details</h1>
@@ -11,13 +10,10 @@
         Back to List
       </a>
     </div>
-
     <ng-container *ngIf="loading$ | async">
       <app-loading-spinner></app-loading-spinner>
     </ng-container>
-
     <div *ngIf="!(loading$ | async) && (pompe$ | async) as pompe" class="grid grid-cols-1 md:grid-cols-3 gap-8">
-      <!-- Main Status Card -->
       <div class="md:col-span-2 space-y-8">
         <div class="bg-white rounded-xl shadow-sm border border-indigo-100 p-8">
           <div class="flex items-center space-x-6 mb-8">
@@ -34,7 +30,6 @@
               </div>
             </div>
           </div>
-
           <div class="space-y-4">
             <div class="flex justify-between text-sm">
               <span class="text-indigo-500 font-medium text-indigo-950">Current Reservoir Level</span>
@@ -46,15 +41,11 @@
             <p class="text-xs text-indigo-500 text-center italic">Next scheduled supply: Tomorrow, 08:30 AM</p>
           </div>
         </div>
-
-        <!-- Details Grid -->
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
           <app-card title="Pump Hardware" value="Model X-2000" subtitle="Last serviced: 2 weeks ago"></app-card>
           <app-card title="Flow Rate" value="45 L/min" subtitle="Calibration within limits"></app-card>
         </div>
       </div>
-
-      <!-- Actions Sidebar -->
       <div class="space-y-6">
         <div class="bg-indigo-900 rounded-xl shadow-lg p-6 text-white">
           <h3 class="font-bold mb-4">Operations</h3>
@@ -69,7 +60,6 @@
             </button>
           </div>
         </div>
-
         <div class="bg-white rounded-xl shadow-sm border border-indigo-100 p-6">
           <h3 class="text-sm font-bold text-indigo-950 mb-4 uppercase tracking-wider">Historical Performance</h3>
           <div class="space-y-4">
