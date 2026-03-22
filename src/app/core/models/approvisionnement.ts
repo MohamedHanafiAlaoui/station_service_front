@@ -1,5 +1,4 @@
 import { Station } from './station';
-
 export interface Approvisionnement {
   id?: number;
   dateAppro: string;
