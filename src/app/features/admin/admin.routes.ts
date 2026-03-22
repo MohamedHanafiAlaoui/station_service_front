@@ -1,13 +1,12 @@
 import { Routes } from '@angular/router';
 import { Approvisionnements } from './approvisionnements/approvisionnements';
 import { Ventes } from './ventes/ventes';
-import { Pompes } from './pompes/pompes';
+import { Pompes } from '../../pages/admin/pompes/pompes';
 import { Clients } from './clients/clients';
 import { Stations } from './stations/stations';
 import { Dashboard } from './dashboard/dashboard';
 import { Employes } from './employes/employes';
 import { JournalAudit } from './journal-audit/journal-audit';
-
 export const ADMIN_ROUTES: Routes = [
   { path: '', component: Dashboard },
   { path: 'stations', component: Stations },
