@@ -8,7 +8,6 @@ import { selectAllClients, selectClientsActionLoading } from '../../store/client
 import { Observable, take } from 'rxjs';
 import { InputFieldComponent } from '../../../../shared/components/input-field/input-field.component';
 import { ClientDto } from '../../../../core/models/client';
-
 @Component({
   selector: 'app-client-edit',
   standalone: true,
@@ -20,7 +19,6 @@ export class ClientEdit implements OnInit {
   clientForm: FormGroup;
   loading$: Observable<boolean>;
   clientId: number | null = null;
-
   constructor(
     private fb: FormBuilder,
     private store: Store,
@@ -34,12 +32,10 @@ export class ClientEdit implements OnInit {
       badgeRFID: ['', [Validators.required]]
     });
   }
-
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
       this.clientId = +id;
-      // Pre-fill the form from the store (clients already loaded by ClientsList)
       this.store.select(selectAllClients).pipe(take(1)).subscribe((clients: ClientDto[]) => {
         const client = clients.find(c => c.id === this.clientId);
         if (client) {
@@ -53,10 +49,8 @@ export class ClientEdit implements OnInit {
       });
     }
   }
-
   onSubmit(): void {
     if (this.clientForm.valid && this.clientId) {
-      // Navigation is handled in ClientsEffects after updateClientSuccess
       this.store.dispatch(ClientsActions.updateClient({
         id: this.clientId,
         client: this.clientForm.value
