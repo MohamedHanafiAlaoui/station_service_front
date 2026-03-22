@@ -1,18 +1,12 @@
 <div class="animate-fade-in pb-12">
-  <!-- Page Header -->
   <div class="mb-8">
     <h1 class="text-3xl font-bold text-slate-800 tracking-tight">Sales Overview</h1>
     <p class="text-slate-500 mt-1">Monitor fuel dispensed, revenue, and client activity across the network.</p>
   </div>
-
-  <!-- Filters & Aggregations -->
   <div class="grid grid-cols-1 lg:grid-cols-4 gap-6 mb-8">
-    
-    <!-- Filter Card -->
     <div class="lg:col-span-2 bg-white rounded-xl shadow-sm border border-slate-200 p-6">
       <h3 class="text-sm font-semibold text-slate-800 mb-4 uppercase tracking-wider">Filter Criteria</h3>
       <form [formGroup]="filterForm" (ngSubmit)="refreshData()" class="space-y-4">
-        
         <div>
           <label class="block text-sm font-medium text-slate-700 mb-1">Select Station</label>
           <select formControlName="stationId" class="w-full border border-slate-200 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-slate-50">
@@ -22,7 +16,6 @@
             }
           </select>
         </div>
-
         <div class="grid grid-cols-2 gap-4">
           <div>
             <label class="block text-sm font-medium text-slate-700 mb-1">Start Date</label>
@@ -33,14 +26,11 @@
             <input type="date" formControlName="endDate" class="w-full border border-slate-200 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
           </div>
         </div>
-
         <button type="submit" [disabled]="!filterForm.get('stationId')?.value" class="w-full mt-2 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors disabled:opacity-50">
           Apply Filters & Refresh
         </button>
       </form>
     </div>
-
-    <!-- Stats Cards -->
     <div class="bg-indigo-600 rounded-xl shadow-md p-6 text-white flex flex-col justify-center relative overflow-hidden">
         <div class="absolute top-0 right-0 p-4 opacity-10">
             <svg class="w-24 h-24" fill="currentColor" viewBox="0 0 20 20"><path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z"></path></svg>
@@ -49,7 +39,6 @@
         <p class="text-3xl font-bold tracking-tight">{{ totalMontant | number:'1.2-2' }} <span class="text-lg font-normal text-indigo-200">MAD</span></p>
         <p class="text-xs text-indigo-200 mt-2">For selected period</p>
     </div>
-
     <div class="bg-emerald-600 rounded-xl shadow-md p-6 text-white flex flex-col justify-center relative overflow-hidden">
          <div class="absolute top-0 right-0 p-4 opacity-10">
             <svg class="w-24 h-24" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M11.3 1.046A120.18 120.18 0 004.895 2.534C4.162 2.768 3.65 3.393 3.65 4.14v6.082a12.001 12.001 0 005.412 10.038c.618.397 1.341.6 2.062.6a4.001 4.001 0 002.329-3.848v-2.064c-.655-.386-1.127-1.01-1.272-1.742a2.983 2.983 0 01-.061-.59v-3.763c0-.85.35-1.666.953-2.222.18-.166.38-.306.596-.407.29-.148.618-.225.955-.225v-2.42c0-.747-.512-1.372-1.245-1.606a120.18 120.18 0 00-6.405-1.488zM15.421 9.07c.05-.097.112-.188.187-.272.28-.316.657-.502 1.065-.502.408 0 .785.186 1.066.502.073.084.135.175.186.273.13.25.197.534.197.828v3.763a1 1 0 01-.06.34 2.001 2.001 0 01-1.393 3.493V19a2.001 2.001 0 01-3.692.684A1 1 0 0113.8 20a1 1 0 01-.848-.466A1.996 1.996 0 0113.8 19v-1.859a2.001 2.001 0 01-1.393-3.493 1 1 0 01-.06-.34v-3.763c0-.294.067-.578.197-.828A2.96 2.96 0 0113.8 8h1.621z" clip-rule="evenodd"></path></svg>
@@ -58,10 +47,7 @@
         <p class="text-3xl font-bold tracking-tight">{{ totalQuantite | number:'1.2-2' }} <span class="text-lg font-normal text-emerald-200">Liters</span></p>
          <p class="text-xs text-emerald-200 mt-2">For selected period</p>
     </div>
-
   </div>
-
-  <!-- Data Table -->
   <div class="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden">
     <div class="px-6 py-4 border-b border-slate-100 flex justify-between items-center bg-slate-50">
         <h3 class="text-lg font-semibold text-slate-800">Sales Records</h3>
@@ -74,7 +60,6 @@
            </span>
         }
     </div>
-
     @if (isLoading) {
       <div class="flex justify-center flex-col gap-3 items-center py-20">
         <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"></div>
@@ -142,8 +127,6 @@
           </tbody>
         </table>
       </div>
-
-      <!-- Pagination -->
       @if (totalPages > 1) {
         <div class="px-6 py-4 border-t border-slate-100 flex items-center justify-between bg-slate-50">
           <p class="text-sm text-slate-500">
@@ -171,8 +154,6 @@
       }
     }
   </div>
-
-  <!-- Detail Drawer -->
   @if (isDrawerOpen && selectedVente) {
     <div class="fixed inset-0 z-40 flex justify-end" (click)="closeDrawer()">
       <div class="fixed inset-0 bg-slate-900/30 backdrop-blur-sm"></div>
@@ -192,7 +173,6 @@
               {{ selectedVente.date }}
             </div>
           </div>
-          
           <div class="space-y-4">
             <div class="p-4 bg-slate-50 rounded-xl border border-slate-100">
                <div class="flex items-center justify-between mb-3">
@@ -213,7 +193,6 @@
                   </div>
                </div>
             </div>
-
             <div class="p-4 bg-slate-50 rounded-xl border border-slate-100">
                <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3">Customer Information</p>
                <div class="flex items-center gap-4">
@@ -236,7 +215,6 @@
                   }
                </div>
             </div>
-
             <div class="p-4 bg-indigo-50 rounded-xl border border-indigo-100">
                <p class="text-xs font-semibold text-indigo-400 uppercase tracking-wider mb-2">Pricing Context</p>
                <div class="flex justify-between items-center font-medium">

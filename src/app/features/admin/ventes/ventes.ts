@@ -5,7 +5,6 @@ import { VenteService } from '../../../core/services/vente.service';
 import { StationService } from '../../../core/services/station';
 import { ToastService } from '../../../core/services/toast.service';
 import { Station } from '../../../core/models/station';
-
 @Component({
   selector: 'app-ventes',
   standalone: true,
@@ -19,29 +18,21 @@ export class Ventes implements OnInit {
   private readonly toast = inject(ToastService);
   private readonly fb = inject(FormBuilder);
   private readonly cdr = inject(ChangeDetectorRef);
-
   stations: Station[] = [];
   ventes: any[] = [];
   pagedVentes: any[] = [];
   isLoading = false;
-  
   filterForm: FormGroup;
   totalMontant = 0;
   totalQuantite = 0;
-
-  // Pagination
   currentPage = 1;
   pageSize = 10;
   totalPages = 1;
-
   get pageNumbers(): number[] {
     return Array.from({ length: this.totalPages }, (_, i) => i + 1);
   }
-
-  // Detail Drawer
   isDrawerOpen = false;
   selectedVente: any = null;
-
   constructor() {
     this.filterForm = this.fb.group({
       stationId: [''],
@@ -49,24 +40,19 @@ export class Ventes implements OnInit {
       endDate: [new Date().toISOString().split('T')[0]]
     });
   }
-
   ngOnInit(): void {
     this.loadStations();
-    
-    // Listen for station selection changes
     this.filterForm.get('stationId')?.valueChanges.subscribe(stationId => {
       if (stationId) {
         this.loadVentes();
       }
     });
   }
-
   private updatePagedItems(): void {
     this.totalPages = Math.max(1, Math.ceil(this.ventes.length / this.pageSize));
     const start = (this.currentPage - 1) * this.pageSize;
     this.pagedVentes = this.ventes.slice(start, start + this.pageSize);
   }
-
   loadStations(): void {
     this.stationService.getAllStations().subscribe({
       next: (data) => {
@@ -78,13 +64,10 @@ export class Ventes implements OnInit {
       error: () => this.toast.error('Erreur lors du chargement des stations')
     });
   }
-
   loadVentes(): void {
     const { stationId, startDate, endDate } = this.filterForm.value;
     if (!stationId) return;
-
     this.isLoading = true;
-    // We fetch a larger batch and paginate client-side for immediate filter/sort responsiveness in this UI
     this.venteService.getVentesByStation(
       stationId, 
       startDate,
@@ -94,11 +77,10 @@ export class Ventes implements OnInit {
       next: (data) => {
         const rawVentes = data.content ? data.content : data;
         this.ventes = this.mapVentes(rawVentes);
+        console.log('>>> Ventes loaded:', this.ventes.length, 'records');
         this.currentPage = 1;
         this.updatePagedItems();
         this.isLoading = false;
-        
-        // Fetch aggregations
         this.loadAggregations(stationId, startDate, endDate);
         this.cdr.detectChanges();
       },
@@ -110,29 +92,30 @@ export class Ventes implements OnInit {
       }
     });
   }
-  
   loadAggregations(stationId: number, start: string, end: string): void {
-      this.venteService.getTotalMontantByStation(stationId, start, end).subscribe(res => this.totalMontant = res || 0);
-      this.venteService.getTotalQuantiteByStation(stationId, start, end).subscribe(res => this.totalQuantite = res || 0);
+      this.venteService.getTotalMontantByStation(stationId, start, end).subscribe(res => {
+          console.log('>>> Total Montant response:', res);
+          this.totalMontant = res || 0;
+      });
+      this.venteService.getTotalQuantiteByStation(stationId, start, end).subscribe(res => {
+          console.log('>>> Total Quantite response:', res);
+          this.totalQuantite = res || 0;
+      });
   }
-
   goToPage(page: number): void {
     if (page >= 1 && page <= this.totalPages) {
       this.currentPage = page;
       this.updatePagedItems();
     }
   }
-
   openDrawer(vente: any): void {
     this.selectedVente = vente;
     this.isDrawerOpen = true;
   }
-
   closeDrawer(): void {
     this.isDrawerOpen = false;
     this.selectedVente = null;
   }
-
   private mapVentes(ventes: any[]): any[] {
     return ventes.map(v => ({
       ...v,
@@ -141,7 +124,6 @@ export class Ventes implements OnInit {
       pompeCode: v.pompe ? `P${v.pompe.codePompe}` : 'N/A'
     }));
   }
-  
   refreshData(): void {
       this.loadVentes();
   }
