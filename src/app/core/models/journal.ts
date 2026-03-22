@@ -1,6 +1,5 @@
 import { Station } from './station';
 import { User } from './user';
-
 export interface Journal {
   id?: number;
   dateAction: string;
