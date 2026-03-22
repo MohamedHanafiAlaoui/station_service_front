@@ -4,12 +4,10 @@ import { catchError, map, mergeMap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { JournalService } from '../../../../core/services/journal.service';
 import * as JournalActions from './journal.actions';
-
 @Injectable()
 export class JournalEffects {
   private actions$ = inject(Actions);
   private journalService = inject(JournalService);
-
   loadJournals$ = createEffect(() =>
     this.actions$.pipe(
       ofType(JournalActions.loadJournals),

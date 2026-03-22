@@ -1,7 +1,6 @@
 import { createReducer, on } from '@ngrx/store';
 import * as JournalActions from './journal.actions';
 import { Journal } from '../../../../core/models/journal';
-
 export interface JournalState {
   journals: Journal[];
   totalElements: number;
@@ -9,7 +8,6 @@ export interface JournalState {
   loading: boolean;
   error: string | null;
 }
-
 export const initialJournalState: JournalState = {
   journals: [],
   totalElements: 0,
@@ -17,7 +15,6 @@ export const initialJournalState: JournalState = {
   loading: false,
   error: null
 };
-
 export const journalReducer = createReducer(
   initialJournalState,
   on(JournalActions.loadJournals, state => ({ ...state, loading: true, error: null })),
