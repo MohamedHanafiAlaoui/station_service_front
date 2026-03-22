@@ -8,4 +8,3 @@ export interface User {
   stationId?: number;
   password?: string;
 }
-
