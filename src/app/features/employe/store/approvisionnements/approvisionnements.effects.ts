@@ -4,12 +4,10 @@ import { catchError, map, mergeMap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { ApprovisionnementService } from '../../../../core/services/approvisionnement.service';
 import * as ApprovisionnementsActions from './approvisionnements.actions';
-
 @Injectable()
 export class ApprovisionnementsEffects {
   private actions$ = inject(Actions);
   private approvoService = inject(ApprovisionnementService);
-
   loadApprovisionnements$ = createEffect(() =>
     this.actions$.pipe(
       ofType(ApprovisionnementsActions.loadApprovisionnements),
