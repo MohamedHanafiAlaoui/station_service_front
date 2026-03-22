@@ -2,7 +2,6 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Api } from '../api/api';
-
 export interface JournalAuditDto {
   id: number;
   dateAction: string;
@@ -10,7 +9,6 @@ export interface JournalAuditDto {
   description: string;
   stationId?: number;
 }
-
 export interface PageResponse<T> {
   content: T[];
   totalElements: number;
@@ -18,13 +16,11 @@ export interface PageResponse<T> {
   size: number;
   number: number;
 }
-
 @Injectable({
   providedIn: 'root'
 })
 export class JournalAuditService {
   private readonly http = inject(HttpClient);
-
   getAllJournals(page: number = 0, size: number = 10): Observable<PageResponse<JournalAuditDto>> {
     const params = new HttpParams()
       .set('page', page.toString())
@@ -32,7 +28,6 @@ export class JournalAuditService {
       .set('sort', 'dateAction,desc');
     return this.http.get<PageResponse<JournalAuditDto>>(Api.JOURNALS, { params });
   }
-
   getJournalsByStation(stationId: number, start: string, end: string, page: number = 0, size: number = 10): Observable<PageResponse<JournalAuditDto>> {
     const params = new HttpParams()
       .set('start', start)
@@ -42,7 +37,6 @@ export class JournalAuditService {
       .set('sort', 'dateAction,desc');
     return this.http.get<PageResponse<JournalAuditDto>>(`${Api.JOURNALS}/station/${stationId}`, { params });
   }
-
   getJournalsByPeriod(start: string, end: string, page: number = 0, size: number = 10): Observable<PageResponse<JournalAuditDto>> {
     const params = new HttpParams()
       .set('start', start)

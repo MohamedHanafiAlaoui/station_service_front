@@ -2,14 +2,11 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Api } from '../api/api';
-import { Journal } from '../models/journal';
-
 @Injectable({
   providedIn: 'root'
 })
 export class JournalService {
   constructor(private readonly http: HttpClient) {}
-
   getJournalsByStation(stationId: number, start: string, end: string, pageable: any): Observable<any> {
     let params = new HttpParams();
     if (start) params = params.set('start', start);
