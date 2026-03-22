@@ -1,45 +1,35 @@
 <div class="min-h-screen w-full flex items-center justify-center bg-[#1e1b4b] px-4 pt-20">
   <div class="w-full max-w-md bg-indigo-900 shadow-xl rounded-xl p-8 border border-gray-700">
-
     <h2 class="text-2xl font-bold text-center text-white mb-6">
       Créer un compte
     </h2>
-
     <input type="text" placeholder="Nom d'utilisateur"
            [(ngModel)]="form.username"
            class="w-full mb-3 px-4 py-2 bg-gray-700 text-white border border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500"/>
-
     <input type="text" placeholder="Nom"
            [(ngModel)]="form.nom"
            class="w-full mb-3 px-4 py-2 bg-gray-700 text-white border border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500"/>
-
     <input type="text" placeholder="Prénom"
            [(ngModel)]="form.prenom"
            class="w-full mb-3 px-4 py-2 bg-gray-700 text-white border border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500"/>
-
     <input type="password" placeholder="Mot de passe"
            [(ngModel)]="form.password"
            class="w-full mb-4 px-4 py-2 bg-gray-700 text-white border border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500"/>
-
     <button (click)="register()"
             class="w-full bg-blue-600 text-white py-2 rounded-lg font-semibold hover:bg-blue-700 transition">
       Créer le compte
     </button>
-
     @if (success) {
       <p class="text-green-400 font-semibold text-center mt-4">{{ success }}</p>
     }
-
     @if (error) {
       <p class="text-red-400 font-semibold text-center mt-4">{{ error }}</p>
     }
-
     <p class="text-center text-gray-300 mt-6">
       Vous avez déjà un compte ?
       <a routerLink="/auth" class="text-blue-400 font-semibold hover:underline">
         Se connecter
       </a>
     </p>
-
   </div>
 </div>
