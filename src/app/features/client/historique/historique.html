@@ -1,122 +1,145 @@
-<div class="p-6 text-white">
-
-  <!-- Header -->
-  <div class="mb-8">
-    <h2 class="text-3xl font-bold tracking-tight">Historique des opérations</h2>
-    <p class="text-indigo-400 text-sm mt-1">Liste de vos transactions récentes.</p>
-  </div>
-
-  <!-- Filters -->
-  <div class="bg-[#1e1b4b] p-6 rounded-xl border border-gray-700 shadow-lg mb-8">
-    <h3 class="text-lg font-semibold mb-4 flex items-center gap-2">
-      <i class="fa-solid fa-filter text-green-400"></i>
-      Filtrer les opérations
-    </h3>
-
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-
-      <div class="flex flex-col">
-        <label class="text-indigo-400 text-sm mb-1">Date début</label>
-        <input
-          type="datetime-local"
-          class="w-full bg-indigo-900 border border-gray-700 rounded-lg p-2 text-white focus:ring-2 focus:ring-green-500 focus:border-green-500 transition"
-          [(ngModel)]="filters.start"
-        >
+<div class="animate-fade-in space-y-8 pb-12">
+  <div class="bg-white rounded-3xl p-8 border border-slate-100 shadow-xl shadow-slate-200/50">
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
+      <div>
+        <h2 class="text-3xl font-black text-slate-800 tracking-tight">Historique des Opérations</h2>
+        <p class="text-slate-500 mt-2 font-medium">Consultez et filtrez l'intégralité de vos transactions.</p>
       </div>
-
-      <div class="flex flex-col">
-        <label class="text-indigo-400 text-sm mb-1">Date fin</label>
-        <input
-          type="datetime-local"
-          class="w-full bg-indigo-900 border border-gray-700 rounded-lg p-2 text-white focus:ring-2 focus:ring-green-500 focus:border-green-500 transition"
-          [(ngModel)]="filters.end"
-        >
+      <div class="flex items-center gap-3">
+        <div class="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center font-black">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          </svg>
+        </div>
       </div>
-
-      <div class="flex flex-col">
-        <label class="text-indigo-400 text-sm mb-1">Quantité min</label>
-        <input
-          type="number"
-          class="w-full bg-indigo-900 border border-gray-700 rounded-lg p-2 text-white focus:ring-2 focus:ring-green-500 focus:border-green-500 transition"
-          [(ngModel)]="filters.minQuantite"
-        >
-      </div>
-
     </div>
-
-    <div class="mt-6 flex justify-end">
-      <button
-        class="px-5 py-2.5 bg-green-600 hover:bg-green-500 rounded-lg text-white text-sm font-medium shadow-md transition"
-        (click)="applyFilters()"
-      >
-        Appliquer
+  </div>
+  <div class="bg-white rounded-3xl p-8 border border-slate-100 shadow-xl shadow-slate-200/50">
+    <div class="flex items-center gap-3 mb-8">
+      <div class="w-8 h-8 rounded-xl bg-slate-100 text-slate-600 flex items-center justify-center">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z">
+          </path>
+        </svg>
+      </div>
+      <h3 class="text-sm font-black text-slate-800 uppercase tracking-widest">Critères de recherche</h3>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div class="space-y-2">
+        <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Période Début</label>
+        <input type="datetime-local" [(ngModel)]="filters.start"
+          class="w-full bg-slate-50 border border-slate-100 focus:bg-white focus:ring-4 focus:ring-emerald-100 focus:border-emerald-400 rounded-2xl py-4 px-4 text-slate-800 font-bold transition-all outline-none">
+      </div>
+      <div class="space-y-2">
+        <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Période Fin</label>
+        <input type="datetime-local" [(ngModel)]="filters.end"
+          class="w-full bg-slate-50 border border-slate-100 focus:bg-white focus:ring-4 focus:ring-emerald-100 focus:border-emerald-400 rounded-2xl py-4 px-4 text-slate-800 font-bold transition-all outline-none">
+      </div>
+      <div class="space-y-2">
+        <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Quantité Minimale</label>
+        <div class="relative">
+          <input type="number" [(ngModel)]="filters.minQuantite"
+            class="w-full bg-slate-50 border border-slate-100 focus:bg-white focus:ring-4 focus:ring-emerald-100 focus:border-emerald-400 rounded-2xl py-4 px-4 text-slate-800 font-bold transition-all outline-none"
+            placeholder="0 L">
+          <span class="absolute right-4 top-1/2 -translate-y-1/2 font-bold text-slate-400">L</span>
+        </div>
+      </div>
+    </div>
+    <div class="mt-8 flex justify-end">
+      <button (click)="applyFilters()"
+        class="bg-emerald-600 hover:bg-slate-900 text-emerald-50 px-10 py-4 rounded-2xl font-black transition-all active:scale-95 shadow-xl shadow-emerald-100 uppercase tracking-widest text-xs">
+        Mettre à jour la liste
       </button>
     </div>
   </div>
-
-  <!-- Loading -->
-  @if ((loading$ | async)) {
-    <div class="flex items-center gap-2 text-gray-300">
-      <span class="animate-spin border-2 border-gray-600 border-t-transparent rounded-full w-5 h-5"></span>
-      Chargement...
+  @if (loading$ | async) {
+  <div class="flex items-center justify-center py-20 bg-white rounded-3xl border border-slate-100 border-dashed">
+    <div class="flex flex-col items-center gap-4">
+      <div class="h-10 w-10 rounded-full border-4 border-slate-100 border-t-emerald-600 animate-spin"></div>
+      <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Analyse de vos transactions...</p>
     </div>
+  </div>
   }
-
-  <!-- Error -->
   @if ((error$ | async); as error) {
-    <div class="bg-red-900/40 border border-red-700 text-red-300 p-3 rounded-lg mb-4">
-      {{ error }}
-    </div>
+  <div class="p-6 bg-rose-50 border border-rose-100 rounded-3xl flex items-center gap-4 text-rose-600 animate-slide-up">
+    <svg class="w-6 h-6 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+        d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z">
+      </path>
+    </svg>
+    <p class="text-sm font-bold">{{ error }}</p>
+  </div>
   }
-
-  <!-- Historique -->
-  @if ((historique$ | async); as hist) {
-
-    @if (hist.length === 0) {
-      <p class="text-indigo-400">Aucune opération trouvée.</p>
-    } @else {
-
-      <div class="space-y-4">
-
-        @for (item of hist; track item.id) {
+  @if (historique$ | async; as hist) {
+  @if (hist.length === 0) {
+  <div class="py-24 bg-white rounded-3xl border border-slate-100 border-dashed text-center">
+    <div class="w-20 h-20 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-6">
+      <svg class="w-10 h-10 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2">
+        </path>
+      </svg>
+    </div>
+    <p class="text-xl font-black text-slate-800">Aucune donnée trouvée</p>
+    <p class="text-slate-400 mt-2 font-medium">Ajustez vos filtres pour voir plus de résultats.</p>
+  </div>
+  } @else {
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6 animate-fade-in">
+    @for (item of hist; track item.id) {
+    <div
+      class="bg-white p-8 rounded-3xl border border-slate-100 shadow-lg shadow-slate-200/40 hover:shadow-emerald-100/60 transition-all hover:-translate-y-1 group">
+      <div class="flex items-start justify-between mb-8">
+        <div class="flex items-center gap-4">
           <div
-            class="bg-[#1e1b4b] p-5 rounded-xl border border-gray-700 shadow-md hover:shadow-green-500/10 hover:border-green-500/40 transition cursor-pointer"
-          >
-
-            <div class="flex items-center justify-between mb-3">
-              <div class="text-sm text-indigo-400">Montant payé</div>
-              <div class="text-xl font-bold text-green-400">{{ item.montantPaye }} DH</div>
-            </div>
-
-            <div class="grid grid-cols-2 gap-4 text-sm">
-
-              <div class="bg-indigo-900/40 p-3 rounded-lg border border-gray-700 flex justify-between">
-                <span class="text-indigo-400">Quantité</span>
-                <span class="font-medium">{{ item.quantite }} L</span>
-              </div>
-
-              <div class="bg-indigo-900/40 p-3 rounded-lg border border-gray-700 flex justify-between">
-                <span class="text-indigo-400">Prix unitaire</span>
-                <span class="font-medium">{{ item.prixUnitaire }} DH</span>
-              </div>
-
-              <div class="bg-indigo-900/40 p-3 rounded-lg border border-gray-700 flex justify-between col-span-2">
-                <span class="text-indigo-400">Pompe</span>
-                <span class="font-medium">{{ item.pompeId }}</span>
-              </div>
-              <div class="flex items-center justify-between text-sm text-indigo-400 mb-2">
-                <span>Date</span>
-                <span class="text-gray-300">{{ item.dateOperation }}</span>
-              </div>
-              
-
-            </div>
-
+            class="w-14 h-14 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center group-hover:bg-emerald-600 group-hover:text-emerald-50 transition-all">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z">
+              </path>
+            </svg>
           </div>
-        }
-
+          <div>
+            <p class="text-xs font-black text-slate-400 uppercase tracking-widest">Transaction #{{ item.id }}</p>
+            <p class="text-sm font-black text-slate-800 mt-0.5">{{ item.dateOperation | date:'dd MMM yyyy, HH:mm' }}</p>
+          </div>
+        </div>
+        <div class="text-right">
+          <p class="text-2xl font-black text-emerald-600 tracking-tight">{{ item.montantPaye }} <span
+              class="text-xs">DH</span></p>
+          <span
+            class="inline-flex px-3 py-1 bg-emerald-50 text-emerald-600 rounded-full text-[10px] font-black uppercase tracking-widest mt-1 border border-emerald-100">Payé</span>
+        </div>
       </div>
-
+      <div class="grid grid-cols-2 gap-4">
+        <div class="p-4 bg-slate-50 rounded-2xl border border-transparent hover:border-slate-100 transition-colors">
+          <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Volume</p>
+          <p class="text-lg font-black text-slate-800">{{ item.quantite }} <span class="text-xs opacity-50">L</span></p>
+        </div>
+        <div class="p-4 bg-slate-50 rounded-2xl border border-transparent hover:border-slate-100 transition-colors">
+          <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Prix Unitaire</p>
+          <p class="text-lg font-black text-slate-800">{{ item.prixUnitaire }} <span
+              class="text-xs opacity-50">DH/L</span></p>
+        </div>
+        <div
+          class="col-span-2 p-4 bg-slate-50 rounded-2xl border border-transparent hover:border-slate-100 transition-colors flex items-center justify-between">
+          <div>
+            <p class="text-[10px] font-black text-emerald-600 uppercase tracking-widest mb-1">{{ getStationName(item.pompe?.stationId) }}</p>
+            <p class="text-[9px] font-bold text-slate-400 uppercase tracking-wider mb-2">{{ getStationAddress(item.pompe?.stationId) }}</p>
+            <p class="text-sm font-black text-slate-800">Pompe : {{ item.pompe?.codePompe || item.pompeId || 'N/A' }}</p>
+          </div>
+          <div class="w-10 h-10 rounded-xl bg-slate-200/50 flex items-center justify-center text-slate-400">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1v1H9V7zm5 0h1v1h-1V7zm-5 4h1v1H9v-1zm5 0h1v1h-1v-1zm-3 4H2v2h1v-2h8v2h1v-2z">
+              </path>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
     }
+  </div>
+  }
   }
 </div>
