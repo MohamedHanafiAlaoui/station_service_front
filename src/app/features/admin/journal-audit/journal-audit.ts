@@ -5,7 +5,6 @@ import { JournalAuditService, JournalAuditDto } from '../../../core/services/jou
 import { StationService } from '../../../core/services/station';
 import { ToastService } from '../../../core/services/toast.service';
 import { Station } from '../../../core/models/station';
-
 @Component({
   selector: 'app-journal-audit',
   standalone: true,
@@ -19,33 +18,24 @@ export class JournalAudit implements OnInit {
   private readonly toast = inject(ToastService);
   private readonly fb = inject(FormBuilder);
   private readonly cdr = inject(ChangeDetectorRef);
-
   stations: Station[] = [];
   logs: JournalAuditDto[] = [];
   isLoading = false;
-  
   filterForm: FormGroup;
-
-  // Pagination (Backend-side)
-  currentPage = 0; // 0-indexed in backend
+  currentPage = 0; 
   pageSize = 10;
   totalPages = 1;
   totalElements = 0;
-
   get pageNumbers(): number[] {
     const total = this.totalPages;
     const current = this.currentPage + 1;
     let start = Math.max(1, current - 2);
     let end = Math.min(total, start + 4);
     if (end - start < 4) start = Math.max(1, end - 4);
-    
     return Array.from({ length: end - start + 1 }, (_, i) => start + i);
   }
-
-  // Detail Drawer
   isDrawerOpen = false;
   selectedLog: JournalAuditDto | null = null;
-
   constructor() {
     this.filterForm = this.fb.group({
       stationId: [''],
@@ -53,27 +43,22 @@ export class JournalAudit implements OnInit {
       endDate: [new Date().toISOString().split('T')[0]]
     });
   }
-
   ngOnInit(): void {
     this.loadStations();
     this.loadLogs();
   }
-
   loadStations(): void {
     this.stationService.getAllStations().subscribe({
       next: (data) => this.stations = data,
       error: () => this.toast.error('Erreur stations')
     });
   }
-
   loadLogs(): void {
     const { stationId, startDate, endDate } = this.filterForm.value;
     this.isLoading = true;
-
     const obs = stationId 
       ? this.journalService.getJournalsByStation(stationId, startDate, endDate, this.currentPage, this.pageSize)
       : this.journalService.getJournalsByPeriod(startDate, endDate, this.currentPage, this.pageSize);
-
     obs.subscribe({
       next: (res) => {
         this.logs = res.content;
@@ -88,35 +73,29 @@ export class JournalAudit implements OnInit {
       }
     });
   }
-
   onFilter(): void {
     this.currentPage = 0;
     this.loadLogs();
   }
-
   goToPage(page: number): void {
     if (page >= 0 && page < this.totalPages) {
       this.currentPage = page;
       this.loadLogs();
     }
   }
-
   openDrawer(log: JournalAuditDto): void {
     this.selectedLog = log;
     this.isDrawerOpen = true;
   }
-
   closeDrawer(): void {
     this.isDrawerOpen = false;
     this.selectedLog = null;
   }
-
   getStationName(id?: number): string {
     if (!id) return 'System';
     const st = this.stations.find(s => s.id === id);
     return st ? st.nom : `Station #${id}`;
   }
-
   getActionColor(type: string): string {
     const t = type.toLowerCase();
     if (t.includes('create')) return 'bg-emerald-50 text-emerald-700 border-emerald-100';
