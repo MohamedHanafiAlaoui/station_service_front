@@ -1,8 +1,6 @@
-/* Journal Audit styles */
 .animate-slide-in-right {
   animation: slideInRight 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
-
 @keyframes slideInRight {
   from {
     transform: translateX(100%);
