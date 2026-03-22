@@ -24,6 +24,7 @@
     "@types/leaflet": "^1.9.21",
     "leaflet": "^1.9.4",
     "rxjs": "~7.8.0",
+    "sweetalert2": "^11.26.23",
     "tslib": "^2.3.0"
   },
   "devDependencies": {
