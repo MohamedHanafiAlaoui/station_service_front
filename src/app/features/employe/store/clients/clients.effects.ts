@@ -6,14 +6,12 @@ import { of } from 'rxjs';
 import { ClientService } from '../../../../core/services/client';
 import { ToastService } from '../../../../core/services/toast.service';
 import * as ClientsActions from './clients.actions';
-
 @Injectable()
 export class ClientsEffects {
   private actions$ = inject(Actions);
   private clientService = inject(ClientService);
   private router = inject(Router);
   private toastService = inject(ToastService);
-
   loadClients$ = createEffect(() =>
     this.actions$.pipe(
       ofType(ClientsActions.loadClients),
@@ -25,7 +23,6 @@ export class ClientsEffects {
       )
     )
   );
-
   searchClients$ = createEffect(() =>
     this.actions$.pipe(
       ofType(ClientsActions.searchClients),
@@ -37,7 +34,6 @@ export class ClientsEffects {
       )
     )
   );
-
   createClient$ = createEffect(() =>
     this.actions$.pipe(
       ofType(ClientsActions.createClient),
@@ -53,7 +49,6 @@ export class ClientsEffects {
       )
     )
   );
-
   createClientSuccess$ = createEffect(() =>
     this.actions$.pipe(
       ofType(ClientsActions.createClientSuccess),
@@ -64,7 +59,6 @@ export class ClientsEffects {
     ),
     { dispatch: false }
   );
-
   createClientFailure$ = createEffect(() =>
     this.actions$.pipe(
       ofType(ClientsActions.createClientFailure),
@@ -72,7 +66,6 @@ export class ClientsEffects {
     ),
     { dispatch: false }
   );
-
   updateClient$ = createEffect(() =>
     this.actions$.pipe(
       ofType(ClientsActions.updateClient),
@@ -84,7 +77,6 @@ export class ClientsEffects {
       )
     )
   );
-
   updateClientSuccess$ = createEffect(() =>
     this.actions$.pipe(
       ofType(ClientsActions.updateClientSuccess),
@@ -95,7 +87,6 @@ export class ClientsEffects {
     ),
     { dispatch: false }
   );
-
   updateClientFailure$ = createEffect(() =>
     this.actions$.pipe(
       ofType(ClientsActions.updateClientFailure),
@@ -103,7 +94,6 @@ export class ClientsEffects {
     ),
     { dispatch: false }
   );
-
   deleteClient$ = createEffect(() =>
     this.actions$.pipe(
       ofType(ClientsActions.deleteClient),
@@ -115,7 +105,6 @@ export class ClientsEffects {
       )
     )
   );
-
   deleteClientSuccess$ = createEffect(() =>
     this.actions$.pipe(
       ofType(ClientsActions.deleteClientSuccess),
@@ -123,7 +112,6 @@ export class ClientsEffects {
     ),
     { dispatch: false }
   );
-
   rechargeClient$ = createEffect(() =>
     this.actions$.pipe(
       ofType(ClientsActions.rechargeClient),
@@ -135,7 +123,6 @@ export class ClientsEffects {
       )
     )
   );
-
   rechargeClientSuccess$ = createEffect(() =>
     this.actions$.pipe(
       ofType(ClientsActions.rechargeClientSuccess),
@@ -146,7 +133,6 @@ export class ClientsEffects {
     ),
     { dispatch: false }
   );
-
   rechargeClientFailure$ = createEffect(() =>
     this.actions$.pipe(
       ofType(ClientsActions.rechargeClientFailure),
