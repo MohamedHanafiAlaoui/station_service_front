@@ -4,14 +4,11 @@ import * as ClientActions from './client.actions';
 import { catchError, map, mergeMap, of } from 'rxjs';
 import { ClientService } from '../../../core/services/client';
 import { UserService } from '../../../core/services/user';
-
 @Injectable()
 export class ClientEffects {
-
   private readonly actions$ = inject(Actions);
   private readonly client = inject(ClientService);
   private readonly userService = inject(UserService);
-
   loadClient$ = createEffect(() =>
     this.actions$.pipe(
       ofType(ClientActions.loadClient),
@@ -23,7 +20,6 @@ export class ClientEffects {
       )
     )
   );
-
   loadHistorique$ = createEffect(() =>
     this.actions$.pipe(
       ofType(ClientActions.loadHistorique),
@@ -35,7 +31,6 @@ export class ClientEffects {
       )
     )
   );
-
   rechargeSolde$ = createEffect(() =>
     this.actions$.pipe(
       ofType(ClientActions.rechargeSolde),
@@ -47,8 +42,6 @@ export class ClientEffects {
       )
     )
   );
-
-
   updateClientName$ = createEffect(() =>
     this.actions$.pipe(
       ofType(ClientActions.updateClientName),
@@ -62,7 +55,4 @@ export class ClientEffects {
       )
     )
   );
-  
-  
-  
 }

@@ -4,7 +4,6 @@ export interface ClientState {
   loading: boolean;
   error: string | null;
 }
-
 export const initialClientState: ClientState = {
   client: null,
   historique: null,
