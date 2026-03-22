@@ -1,125 +1,92 @@
 <div class="p-6 text-white">
-
-  <!-- Header -->
   <div class="mb-8">
-    <h2 class="text-3xl font-bold tracking-tight">Profil du client</h2>
-    <p class="text-indigo-400 text-sm mt-1">Informations personnelles et solde actuel.</p>
+    <h2 class="text-3xl text-black  font-bold tracking-tight text-emerald-50" style="color: black !important;">Profil du client</h2>
+    <p class="text-emerald-400 text-sm mt-1">Informations personnelles et solde actuel.</p>
   </div>
-
-  <!-- Loading -->
   @if ((loading$ | async)) {
-    <div class="flex items-center gap-2 text-gray-300">
-      <span class="animate-spin border-2 border-gray-600 border-t-transparent rounded-full w-5 h-5"></span>
+    <div class="flex items-center gap-2 text-emerald-100">
+      <span class="animate-spin border-2 border-emerald-600 border-t-transparent rounded-full w-5 h-5"></span>
       Chargement...
     </div>
   }
-
-  <!-- Error -->
   @if ((error$ | async); as error) {
     <div class="bg-red-900/40 border border-red-700 text-red-300 p-3 rounded-lg">
       {{ error }}
     </div>
   }
-
-  <!-- Content -->
   @if ((client$ | async); as client) {
-
-    <div class="bg-[#1e1b4b] p-6 rounded-xl border border-gray-700 shadow-lg space-y-6">
-
-      <!-- Avatar + Name -->
+    <div class="bg-slate-900 p-6 rounded-xl border border-slate-700 shadow-lg space-y-6">
       <div class="flex items-center gap-4">
-        <div class="w-16 h-16 rounded-full bg-indigo-900 flex items-center justify-center text-2xl font-bold">
+        <div class="w-16 h-16 rounded-full bg-emerald-900 flex items-center justify-center text-emerald-50 text-2xl font-bold">
           {{ client.prenom?.charAt(0).toUpperCase() }}
         </div>
-
         <div>
-          <p class="text-xl font-semibold">{{ client.nom }} {{ client.prenom }}</p>
-          <p class="text-indigo-400 text-sm">Client ID : {{ client.id }}</p>
+          <p class="text-xl font-semibold text-emerald-50">{{ client.nom }} {{ client.prenom }}</p>
+          <p class="text-emerald-400 text-sm">Client ID : {{ client.id }}</p>
         </div>
       </div>
-
-      <!-- Modifier Button -->
       <div class="flex justify-end">
         <button 
-          class="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg text-white text-sm"
+          class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 rounded-lg text-emerald-50 text-sm active:scale-95 transition-all"
           (click)="editMode = true">
           Modifier
         </button>
       </div>
-
       <hr class="border-gray-700">
-
-      <!-- Info Grid -->
       <div class="grid gap-6 md:grid-cols-2">
-
-        <div class="bg-indigo-900/40 p-4 rounded-lg border border-gray-700">
-          <p class="text-indigo-400 text-sm">Nom</p>
-          <p class="text-xl font-semibold">{{ client.nom }}</p>
+        <div class="bg-emerald-900/20 p-4 rounded-lg border border-slate-700">
+          <p class="text-emerald-400 text-sm">Nom</p>
+          <p class="text-xl font-semibold text-emerald-50">{{ client.nom }}</p>
         </div>
-
-        <div class="bg-indigo-900/40 p-4 rounded-lg border border-gray-700">
-          <p class="text-indigo-400 text-sm">Prénom</p>
-          <p class="text-xl font-semibold">{{ client.prenom }}</p>
+        <div class="bg-emerald-900/20 p-4 rounded-lg border border-slate-700">
+          <p class="text-emerald-400 text-sm">Prénom</p>
+          <p class="text-xl font-semibold text-emerald-50">{{ client.prenom }}</p>
         </div>
-
-        <div class="bg-indigo-900/40 p-4 rounded-lg border border-gray-700">
-          <p class="text-indigo-400 text-sm">Badge RFID</p>
-          <p class="text-lg font-medium">{{ client.badgeRFID }}</p>
+        <div class="bg-emerald-900/20 p-4 rounded-lg border border-slate-700">
+          <p class="text-emerald-400 text-sm">Badge RFID</p>
+          <p class="text-lg font-medium text-emerald-100">{{ client.badgeRFID }}</p>
         </div>
-
-        <div class="bg-indigo-900/40 p-4 rounded-lg border border-gray-700">
-          <p class="text-indigo-400 text-sm">Solde actuel</p>
-          <p class="text-3xl font-bold text-green-400">{{ client.solde }} DH</p>
+        <div class="bg-emerald-900/20 p-4 rounded-lg border border-slate-700">
+          <p class="text-emerald-400 text-sm">Solde actuel</p>
+          <p class="text-3xl font-bold text-teal-400">{{ client.solde }} DH</p>
         </div>
-
       </div>
-
-      <!-- Edit Form -->
       @if (editMode) {
-        <div class="bg-indigo-900/40 p-4 rounded-lg border border-gray-700 mt-6">
-
-          <h3 class="text-lg font-semibold mb-4">Modifier mes informations</h3>
-
+        <div class="bg-emerald-900/20 p-6 rounded-lg border border-slate-700 mt-6 animate-slide-up">
+          <h3 class="text-lg font-semibold mb-4 text-emerald-50">Modifier mes informations</h3>
           <form (ngSubmit)="save()" class="space-y-4">
-
             <div>
-              <label class="text-indigo-400 text-sm">Nom</label>
+              <label class="text-emerald-400 text-sm">Nom</label>
               <input 
                 [(ngModel)]="form.nom"
                 name="nom"
-                class="w-full p-2 rounded bg-[#1e1b4b] border border-gray-700 text-white"
+                class="w-full p-2 rounded bg-slate-800 border border-slate-700 text-emerald-50 focus:border-emerald-500 outline-none"
               >
             </div>
-
             <div>
-              <label class="text-indigo-400 text-sm">Prénom</label>
+              <label class="text-emerald-400 text-sm">Prénom</label>
               <input 
                 [(ngModel)]="form.prenom"
                 name="prenom"
-                class="w-full p-2 rounded bg-[#1e1b4b] border border-gray-700 text-white"
+                class="w-full p-2 rounded bg-slate-800 border border-slate-700 text-emerald-50 focus:border-emerald-500 outline-none"
               >
             </div>
-
             <div class="flex gap-3">
               <button 
                 type="submit"
-                class="px-4 py-2 bg-green-600 hover:bg-green-700 rounded-lg text-white text-sm">
+                class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 rounded-lg text-emerald-50 text-sm active:scale-95 transition-all">
                 Enregistrer
               </button>
-
               <button 
                 type="button"
-                class="px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg text-white text-sm"
+                class="px-4 py-2 bg-slate-700 hover:bg-slate-600 rounded-lg text-emerald-50 text-sm active:scale-95 transition-all"
                 (click)="editMode = false">
                 Annuler
               </button>
             </div>
-
           </form>
-
         </div>
       }
-
     </div>
   }
 </div>
