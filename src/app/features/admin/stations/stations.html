@@ -1,25 +1,35 @@
 <div class="animate-fade-in pb-12">
-  <!-- Page Header -->
   <div class="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4">
     <div>
       <h1 class="text-3xl font-bold text-slate-800 tracking-tight">Station Management</h1>
       <p class="text-slate-500 mt-1">Manage network stations, locations, and operational status.</p>
     </div>
-    <div class="flex gap-3">
-      <div class="relative">
-        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-          <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-        </div>
-        <input type="text" (input)="onSearch($event)" placeholder="Search stations..." class="pl-10 pr-4 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 w-64 shadow-sm bg-white text-slate-700">
+    <div class="flex flex-col items-end gap-4">
+      <div class="flex items-center bg-slate-100 p-1 rounded-xl border border-slate-200 shadow-inner">
+        <button (click)="setFilter('ALL')" 
+                [class]="statusFilter === 'ALL' ? 'bg-white text-indigo-600 shadow-sm' : 'text-slate-500 hover:text-slate-800 hover:bg-white/50'"
+                class="px-4 py-1.5 rounded-lg text-xs font-bold transition-all">All</button>
+        <button (click)="setFilter('ACTIVE')" 
+                [class]="statusFilter === 'ACTIVE' ? 'bg-white text-emerald-600 shadow-sm' : 'text-slate-500 hover:text-slate-800 hover:bg-white/50'"
+                class="px-4 py-1.5 rounded-lg text-xs font-bold transition-all">Operational</button>
+        <button (click)="setFilter('INACTIVE')" 
+                [class]="statusFilter === 'INACTIVE' ? 'bg-white text-rose-600 shadow-sm' : 'text-slate-500 hover:text-slate-800 hover:bg-white/50'"
+                class="px-4 py-1.5 rounded-lg text-xs font-bold transition-all">Inactive</button>
       </div>
-      <button (click)="openModal('create')" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors shadow-sm flex items-center gap-2">
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
-        New Station
-      </button>
+      <div class="flex gap-3">
+        <div class="relative">
+          <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+          </div>
+          <input type="text" (focus)="onSearch($event)" (input)="onSearch($event)" placeholder="Search stations..." class="pl-10 pr-4 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 w-64 shadow-sm bg-white text-slate-700">
+        </div>
+        <button (click)="openModal('create')" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors shadow-sm flex items-center gap-2">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+          New Station
+        </button>
+      </div>
     </div>
   </div>
-
-  <!-- Data Table Card -->
   <div class="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden">
     @if (isLoading) {
       <div class="flex justify-center items-center py-20">
@@ -63,29 +73,40 @@
                   <div class="text-xs text-slate-500">{{ station.latitude | number:'1.4-4' }}, {{ station.longitude | number:'1.4-4' }}</div>
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap">
-                  <button (click)="toggleStatus(station.id, station.active)"
+                  <div
                           [class.bg-emerald-50]="station.active" [class.text-emerald-600]="station.active" [class.border-emerald-100]="station.active"
                           [class.bg-rose-50]="!station.active" [class.text-rose-600]="!station.active" [class.border-rose-100]="!station.active"
-                          class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium border hover:opacity-80 transition-opacity">
+                          class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium border transition-opacity">
                     <span [class.bg-emerald-500]="station.active" [class.bg-rose-500]="!station.active" class="w-1.5 h-1.5 rounded-full mr-1.5"></span>
                     {{ station.active ? 'Operational' : 'Inactive' }}
-                  </button>
+                  </div>
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                  <button (click)="openDrawer(station)" class="text-slate-500 hover:text-slate-800 bg-slate-50 hover:bg-slate-100 p-2 rounded-lg transition-colors inline-block mr-2" title="View Details">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
-                  </button>
-                  <button (click)="openModal('edit', station)" class="text-indigo-600 hover:text-indigo-900 bg-indigo-50 hover:bg-indigo-100 p-2 rounded-lg transition-colors inline-block" title="Edit">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
-                  </button>
+                  <div class="flex items-center justify-end gap-1">
+                    <button (click)="openDrawer(station)" class="text-slate-500 hover:text-slate-800 bg-slate-50 hover:bg-slate-100 p-2 rounded-lg transition-colors inline-block" title="View Details">
+                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+                    </button>
+                    <button (click)="openModal('edit', station)" class="text-indigo-600 hover:text-indigo-900 bg-indigo-50 hover:bg-indigo-100 p-2 rounded-lg transition-colors inline-block" title="Edit">
+                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
+                    </button>
+                    @if (station.active !== false) {
+                      <button (click)="deleteStation(station.id)" 
+                              class="text-rose-600 hover:text-rose-900 bg-rose-50 hover:bg-rose-100 p-2 rounded-lg transition-colors inline-block" title="Deactivate">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                      </button>
+                    } @else {
+                      <button (click)="restoreStation(station.id)" 
+                              class="text-emerald-600 hover:text-emerald-900 bg-emerald-50 hover:bg-emerald-100 p-2 rounded-lg transition-colors inline-block" title="Activate">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+                      </button>
+                    }
+                  </div>
                 </td>
               </tr>
             }
           </tbody>
         </table>
       </div>
-
-      <!-- Pagination -->
       @if (totalPages > 1) {
         <div class="px-6 py-4 border-t border-slate-100 flex items-center justify-between bg-slate-50">
           <p class="text-sm text-slate-500">
@@ -113,8 +134,6 @@
       }
     }
   </div>
-
-  <!-- Detail Drawer -->
   @if (isDrawerOpen && selectedStation) {
     <div class="fixed inset-0 z-40 flex justify-end" (click)="closeDrawer()">
       <div class="fixed inset-0 bg-slate-900/30 backdrop-blur-sm"></div>
@@ -175,12 +194,9 @@
       </div>
     </div>
   }
-
-  <!-- Create/Edit Modal overlay-->
   @if (isModalOpen) {
     <div class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 backdrop-blur-sm transition-opacity">
       <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg mx-4 overflow-hidden animate-slide-up">
-
         <div class="px-6 py-4 border-b border-slate-100 flex justify-between items-center bg-slate-50">
           <h3 class="text-lg font-bold text-slate-800 flex items-center gap-2">
             <div class="w-8 h-8 rounded-lg bg-indigo-100 text-indigo-600 flex items-center justify-center">
@@ -192,10 +208,8 @@
              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
           </button>
         </div>
-
         <form [formGroup]="stationForm" (ngSubmit)="onSubmit()" class="p-6">
           <div class="space-y-4">
-
             <div>
               <label class="block text-sm font-medium text-slate-700 mb-1">Station Name <span class="text-rose-500">*</span></label>
               <input formControlName="nom" type="text" class="w-full border border-slate-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-slate-800" placeholder="e.g. Station Agdal">
@@ -203,7 +217,6 @@
                 <p class="text-rose-500 text-xs mt-1">Name must be at least 3 characters long.</p>
               }
             </div>
-
             <div>
               <label class="block text-sm font-medium text-slate-700 mb-1">Address <span class="text-rose-500">*</span></label>
               <input formControlName="adresse" type="text" class="w-full border border-slate-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-slate-800" placeholder="e.g. 15 Avenue de France, Rabat">
@@ -211,7 +224,6 @@
                 <p class="text-rose-500 text-xs mt-1">Address must be at least 5 characters long.</p>
               }
             </div>
-
             <div class="grid grid-cols-2 gap-4">
               <div>
                 <label class="block text-sm font-medium text-slate-700 mb-1">Latitude</label>
@@ -222,7 +234,6 @@
                 <input formControlName="longitude" type="number" step="any" class="w-full border border-slate-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-slate-800" placeholder="0.000">
               </div>
             </div>
-
             <div class="flex items-center gap-3 pt-2">
               <label class="relative inline-flex items-center cursor-pointer">
                 <input type="checkbox" formControlName="active" class="sr-only peer">
@@ -230,9 +241,7 @@
                 <span class="ml-3 text-sm font-medium text-slate-700">Set Operational Status Active</span>
               </label>
             </div>
-
           </div>
-
           <div class="mt-8 flex justify-end gap-3 pt-4 border-t border-slate-100">
             <button type="button" (click)="closeModal()" class="px-5 py-2.5 rounded-lg text-sm font-medium text-slate-600 bg-white border border-slate-200 hover:bg-slate-50 transition-colors">
               Cancel
