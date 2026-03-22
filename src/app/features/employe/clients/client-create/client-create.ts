@@ -7,7 +7,6 @@ import * as ClientsActions from '../../store/clients/clients.actions';
 import { selectClientsActionLoading } from '../../store/clients/clients.selectors';
 import { Observable } from 'rxjs';
 import { InputFieldComponent } from '../../../../shared/components/input-field/input-field.component';
-
 @Component({
   selector: 'app-client-create',
   standalone: true,
@@ -18,7 +17,6 @@ import { InputFieldComponent } from '../../../../shared/components/input-field/i
 export class ClientCreate {
   clientForm: FormGroup;
   loading$: Observable<boolean>;
-
   constructor(private fb: FormBuilder, private store: Store) {
     this.loading$ = this.store.select(selectClientsActionLoading);
     this.clientForm = this.fb.group({
@@ -28,10 +26,8 @@ export class ClientCreate {
       badgeRFID: ['', [Validators.required]]
     });
   }
-
   onSubmit(): void {
     if (this.clientForm.valid) {
-      // Navigation is handled in ClientsEffects after createClientSuccess
       this.store.dispatch(ClientsActions.createClient({ client: this.clientForm.value }));
     }
   }
