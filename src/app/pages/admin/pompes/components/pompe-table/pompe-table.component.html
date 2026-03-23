@@ -1,0 +1,102 @@
+<div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+  <div class="overflow-x-auto">
+    <table class="w-full text-left border-collapse">
+      <thead>
+        <tr class="bg-slate-50/50 border-b border-slate-100">
+          <th scope="col" class="px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">Pump Code / Station</th>
+          <th scope="col" class="px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">Type</th>
+          <th scope="col" class="px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider text-right">Current Level</th>
+          <th scope="col" class="px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">Status</th>
+          <th scope="col" class="px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider text-right">Actions</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-slate-50">
+        @if (isLoading) {
+          @for (i of [1,2,3,4,5]; track i) {
+            <tr class="animate-pulse">
+              <td class="px-6 py-4"><div class="h-10 bg-slate-100 rounded-lg w-32"></div></td>
+              <td class="px-6 py-4"><div class="h-6 bg-slate-100 rounded-full w-20"></div></td>
+              <td class="px-6 py-4"><div class="h-6 bg-slate-100 rounded-lg w-16 ml-auto"></div></td>
+              <td class="px-6 py-4"><div class="h-6 bg-slate-100 rounded-full w-24"></div></td>
+              <td class="px-6 py-4"><div class="h-8 bg-slate-100 rounded-lg w-24 ml-auto"></div></td>
+            </tr>
+          }
+        } @else {
+          @for (pompe of pompes; track pompe.id) {
+            <tr class="hover:bg-slate-50/80 transition-colors group">
+              <td class="px-6 py-4">
+                <div class="flex items-center gap-3">
+                  <div [class]="pompe.enService ? 'bg-indigo-100 text-indigo-600' : 'bg-slate-100 text-slate-400'" 
+                       class="w-10 h-10 rounded-xl flex items-center justify-center font-bold text-sm shrink-0 transition-colors">
+                    {{ pompe.codePompe }}
+                  </div>
+                  <div class="flex flex-col min-w-0">
+                    <span class="text-sm font-semibold text-slate-900 truncate">Pump #{{ pompe.id }}</span>
+                    <span class="text-xs text-slate-500 truncate">Station ID: {{ pompe.stationId }}</span>
+                  </div>
+                </div>
+              </td>
+              <td class="px-6 py-4 text-right">
+                 <div class="flex justify-start">
+                    <span [class]="getFuelBadgeClass(pompe.typeCarburant)"
+                          class="px-2.5 py-1 rounded-full text-[10px] font-bold tracking-wider border transition-all">
+                      {{ pompe.typeCarburant }}
+                    </span>
+                 </div>
+              </td>
+              <td class="px-6 py-4 text-right">
+                <div class="flex flex-col items-end">
+                  <span class="text-sm font-bold text-slate-800">{{ pompe.niveauActuel | number:'1.0-2' }} L</span>
+                  <div class="w-16 h-1 bg-slate-100 rounded-full mt-1 overflow-hidden">
+                    <div [style.width.%]="(pompe.niveauActuel / pompe.capaciteMax) * 100" 
+                         [class]="(pompe.niveauActuel / pompe.capaciteMax) < 0.2 ? 'bg-rose-500' : 'bg-indigo-500'"
+                         class="h-full rounded-full transition-all duration-500"></div>
+                  </div>
+                </div>
+              </td>
+              <td class="px-6 py-4">
+                <span [class.bg-emerald-100]="pompe.enService" [class.text-emerald-700]="pompe.enService" [class.border-emerald-200]="pompe.enService"
+                      [class.bg-rose-100]="!pompe.enService" [class.text-rose-700]="!pompe.enService" [class.border-rose-200]="!pompe.enService"
+                      class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold border transition-colors">
+                  <span [class.bg-emerald-500]="pompe.enService" [class.bg-rose-500]="!pompe.enService" class="w-1.5 h-1.5 rounded-full mr-2"></span>
+                  {{ pompe.enService ? 'En Service' : 'Hors Service' }}
+                </span>
+              </td>
+              <td class="px-6 py-4 text-right">
+                <div class="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <button (click)="onViewDetails(pompe)" class="p-2 text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-all" title="Détails">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+                  </button>
+                  <button (click)="onEdit(pompe)" class="p-2 text-slate-400 hover:text-amber-600 hover:bg-amber-50 rounded-lg transition-all" title="Modifier">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+                  </button>
+                  @if (pompe.enService !== false) {
+                    <button (click)="onDelete(pompe.id)" class="p-2 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-all" title="Désactiver">
+                      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"></path></svg>
+                    </button>
+                  } @else {
+                    <button (click)="onRestore(pompe.id)" class="p-2 text-slate-400 hover:text-emerald-600 hover:bg-emerald-50 rounded-lg transition-all" title="Réactiver">
+                      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+                    </button>
+                  }
+                </div>
+              </td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="5" class="px-6 py-12 text-center">
+                <div class="flex flex-col items-center justify-center">
+                  <div class="w-16 h-16 bg-slate-50 rounded-full flex items-center justify-center mb-4">
+                    <svg class="w-8 h-8 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v8l9-11h-7z"></path></svg>
+                  </div>
+                  <h3 class="text-slate-900 font-semibold mb-1">Aucune pompe trouvée</h3>
+                  <p class="text-slate-500 text-sm max-w-xs mx-auto">Essayez d'ajuster vos filtres ou effectuez une nouvelle recherche.</p>
+                </div>
+              </td>
+            </tr>
+          }
+        }
+      </tbody>
+    </table>
+  </div>
+</div>
