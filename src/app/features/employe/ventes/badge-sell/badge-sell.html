@@ -10,20 +10,15 @@
         Back to Sales
       </a>
     </div>
-
     <div class="bg-white rounded-xl shadow-sm border border-indigo-100 overflow-hidden">
-      <!-- Success Alert -->
       <div *ngIf="success" class="p-4 bg-green-50 border-b border-green-100 flex items-center text-green-700 text-sm">
         <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
         Transaction successful! Fuel dispensed.
       </div>
-
-      <!-- Error Alert -->
       <div *ngIf="error" class="p-4 bg-red-50 border-b border-red-100 flex items-center text-red-700 text-sm">
         <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>
         {{ error }}
       </div>
-
       <div class="p-8">
         <form [formGroup]="sellForm" (ngSubmit)="onSubmit()" class="space-y-6">
           <div class="flex items-center justify-center p-8 bg-indigo-50 border-2 border-dashed border-indigo-200 rounded-xl mb-6">
@@ -35,7 +30,6 @@
               <p class="text-xs text-indigo-500 mt-1">Place the badge near the reader</p>
             </div>
           </div>
-
           <div class="space-y-4">
             <label class="block text-sm font-medium text-indigo-950">Select Pump</label>
             <select formControlName="pompeId" class="w-full bg-white border border-indigo-200 rounded-lg px-4 py-3 text-sm text-indigo-950 focus:outline-none focus:ring-2 focus:ring-indigo-500 h-12 appearance-none">
@@ -44,11 +38,8 @@
               </option>
             </select>
           </div>
-
           <app-input-field label="Badge RFID Code" formControlName="badgeCode" placeholder="Enter or scan badge code"></app-input-field>
-          
           <app-input-field label="Quantity (Liters)" formControlName="quantity" type="number" placeholder="0.00"></app-input-field>
-
           <div class="pt-6">
             <button type="submit" [disabled]="sellForm.invalid || loading" class="w-full py-3 bg-indigo-600 text-white rounded-lg font-bold shadow-md hover:bg-indigo-700 transition-colors disabled:opacity-50 flex items-center justify-center">
               <span *ngIf="loading" class="mr-2">

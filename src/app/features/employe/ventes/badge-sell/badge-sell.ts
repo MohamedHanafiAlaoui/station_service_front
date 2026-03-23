@@ -9,7 +9,6 @@ import { selectAllPompes } from '../../store/pompes/pompes.selectors';
 import * as PompesActions from '../../store/pompes/pompes.actions';
 import { Pompe } from '../../../../core/models/pompe';
 import { Observable } from 'rxjs';
-
 @Component({
   selector: 'app-badge-sell',
   standalone: true,
@@ -23,7 +22,6 @@ export class BadgeSell {
   success = false;
   error: string | null = null;
   pompes$: Observable<Pompe[]>;
-
   constructor(
     private fb: FormBuilder,
     private badgeService: BadgeService,
@@ -37,17 +35,14 @@ export class BadgeSell {
       pompeId: [null, [Validators.required]]
     });
   }
-
   ngOnInit(): void {
     this.store.dispatch(PompesActions.loadPompesByStation({ stationId: 1 }));
   }
-
   onSubmit(): void {
     if (this.sellForm.valid) {
       this.loading = true;
       this.error = null;
       this.success = false;
-      
       this.badgeService.sellFuel(this.sellForm.value).subscribe({
         next: () => {
           this.loading = false;
