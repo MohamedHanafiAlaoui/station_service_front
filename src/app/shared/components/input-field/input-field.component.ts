@@ -1,7 +1,6 @@
 import { Component, Input, forwardRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NG_VALUE_ACCESSOR, ControlValueAccessor, FormsModule } from '@angular/forms';
-
 @Component({
   selector: 'app-input-field',
   standalone: true,
@@ -35,28 +34,21 @@ export class InputFieldComponent implements ControlValueAccessor {
   @Input() placeholder: string = '';
   @Input() error?: string;
   @Input() disabled: boolean = false;
-
   value: any = '';
-
   onChange: any = () => {};
   onTouched: any = () => {};
-
   writeValue(value: any): void {
     this.value = value;
   }
-
   registerOnChange(fn: any): void {
     this.onChange = fn;
   }
-
   registerOnTouched(fn: any): void {
     this.onTouched = fn;
   }
-
   setDisabledState(isDisabled: boolean): void {
     this.disabled = isDisabled;
   }
-
   onInput(event: any) {
     this.value = event.target.value;
     this.onChange(this.value);
