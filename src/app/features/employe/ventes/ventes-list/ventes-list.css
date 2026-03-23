@@ -1,0 +1,39 @@
+.premium-table-container {
+    border-radius: 1rem;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+    background: white;
+}
+:host ::ng-deep .ant-table-thead > tr > th {
+    background: #f8fafc !important;
+    font-weight: 600 !important;
+    color: #475569 !important;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+}
+:host ::ng-deep .ant-table-tbody > tr:hover > td {
+    background: #f1f5f9 !important;
+}
+.badge-gold {
+    background: linear-gradient(135deg, #fcd34d 0%, #fbbf24 100%);
+    color: #92400e;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    box-shadow: 0 2px 4px rgba(251, 191, 36, 0.2);
+}
+.badge-normal {
+    background: #f1f5f9;
+    color: #64748b;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+.badge-none {
+    color: #94a3b8;
+    font-size: 0.75rem;
+    font-style: italic;
+}
