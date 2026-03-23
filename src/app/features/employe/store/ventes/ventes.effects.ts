@@ -4,12 +4,10 @@ import { catchError, map, mergeMap } from 'rxjs/operators';
 import { of, forkJoin } from 'rxjs';
 import { VenteService } from '../../../../core/services/vente.service';
 import * as VentesActions from './ventes.actions';
-
 @Injectable()
 export class VentesEffects {
   private actions$ = inject(Actions);
   private venteService = inject(VenteService);
-
   loadVentes$ = createEffect(() =>
     this.actions$.pipe(
       ofType(VentesActions.loadVentes),
@@ -21,7 +19,6 @@ export class VentesEffects {
       )
     )
   );
-
   loadVentesByPompe$ = createEffect(() =>
     this.actions$.pipe(
       ofType(VentesActions.loadVentesByPompe),
@@ -33,7 +30,6 @@ export class VentesEffects {
       )
     )
   );
-
   loadVentesStats$ = createEffect(() =>
     this.actions$.pipe(
       ofType(VentesActions.loadVentesStats),
