@@ -1,7 +1,6 @@
 import { Component, Output, EventEmitter, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-
 @Component({
   selector: 'app-date-range-picker',
   standalone: true,
@@ -23,7 +22,6 @@ export class DateRangePickerComponent {
   @Input() startDate: string = '';
   @Input() endDate: string = '';
   @Output() dateChange = new EventEmitter<{start: string, end: string}>();
-
   onDateChange() {
     this.dateChange.emit({ start: this.startDate, end: this.endDate });
   }
