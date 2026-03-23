@@ -1,7 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ToastService } from '../../../core/services/toast.service';
-
 @Component({
   selector: 'app-toast',
   standalone: true,
@@ -32,11 +31,9 @@ import { ToastService } from '../../../core/services/toast.service';
               </div>
             }
           </div>
-          
           <div class="flex-grow font-medium text-sm">
             {{ toast.message }}
           </div>
-
           <button (click)="toastService.remove(toast.id)" class="ml-4 text-gray-400 hover:text-gray-600 transition-colors">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
           </button>

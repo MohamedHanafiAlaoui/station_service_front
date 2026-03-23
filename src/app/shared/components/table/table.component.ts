@@ -1,6 +1,5 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ContentChild, TemplateRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
 @Component({
   selector: 'app-table',
   standalone: true,
@@ -21,11 +20,14 @@ import { CommonModule } from '@angular/common';
         <tbody class="bg-white divide-y divide-gray-200">
           <tr *ngFor="let row of data" class="hover:bg-indigo-50/30 transition-colors">
             <td *ngFor="let col of columns" class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-              {{row[col.field]}}
+              <ng-container *ngIf="cellTemplate; else defaultCell">
+                <ng-container *ngTemplateOutlet="cellTemplate; context: { field: col.field, value: row[col.field], row: row }"></ng-container>
+              </ng-container>
+              <ng-template #defaultCell>{{row[col.field]}}</ng-template>
             </td>
             <td *ngIf="actions.length > 0" class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-2">
               <button *ngFor="let action of actions" (click)="onAction(action.id, row)" 
-                class="text-{{action.color}}-600 hover:text-{{action.color}}-900 transition-colors">
+                class="px-3 py-1 bg-white border border-indigo-100 rounded-md text-{{action.color || 'indigo'}}-600 hover:bg-{{action.color || 'indigo'}}-50 transition-colors shadow-sm">
                 {{action.label}}
               </button>
             </td>
@@ -45,7 +47,7 @@ export class TableComponent {
   @Input() data: any[] = [];
   @Input() actions: { id: string; label: string; color: string }[] = [];
   @Output() actionClick = new EventEmitter<{ action: string; row: any }>();
-
+  @ContentChild('cellTemplate', { static: false }) cellTemplate?: TemplateRef<any>;
   onAction(action: string, row: any) {
     this.actionClick.emit({ action, row });
   }
