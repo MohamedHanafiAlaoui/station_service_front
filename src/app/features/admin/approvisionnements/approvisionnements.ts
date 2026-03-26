@@ -1,6 +1,6 @@
 import { Component, inject, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ApprovisionnementService } from '../../../core/services/approvisionnement.service';
 import { StationService } from '../../../core/services/station';
 import { ToastService } from '../../../core/services/toast.service';
@@ -31,10 +31,17 @@ export class Approvisionnements implements OnInit {
     return Array.from({ length: this.totalPages }, (_, i) => i + 1);
   }
   isDrawerOpen = false;
+  isAddDrawerOpen = false;
   selectedApp: any = null;
+  addForm: FormGroup;
   constructor() {
     this.filterForm = this.fb.group({
       stationId: ['']
+    });
+    this.addForm = this.fb.group({
+      stationId: ['', Validators.required],
+      typeCarburant: ['ESSENCE', Validators.required],
+      quantite: [0, [Validators.required, Validators.min(1)]]
     });
   }
   ngOnInit(): void {
@@ -95,15 +102,47 @@ export class Approvisionnements implements OnInit {
     this.isDrawerOpen = false;
     this.selectedApp = null;
   }
+  openAddDrawer(): void {
+    this.isAddDrawerOpen = true;
+    this.addForm.reset({
+      stationId: this.filterForm.get('stationId')?.value || '',
+      typeCarburant: 'ESSENCE',
+      quantite: 0
+    });
+  }
+  closeAddDrawer(): void {
+    this.isAddDrawerOpen = false;
+  }
+  submitAddForm(): void {
+    if (this.addForm.valid) {
+      this.isLoading = true;
+      const newApp = this.addForm.value;
+      this.approvisionnementService.createApprovisionnement(newApp).subscribe({
+        next: () => {
+          this.toast.success('Approvisionnement ajouté avec succès');
+          this.closeAddDrawer();
+          this.loadApprovisionnements(newApp.stationId);
+        },
+        error: (err) => {
+          this.toast.error('Erreur lors de l\'ajout de l\'approvisionnement');
+          this.isLoading = false;
+        }
+      });
+    }
+  }
   private mapApprovisionnements(apps: any[]): any[] {
     console.log('Mapping approvisionnements:', apps);
-    return apps.map(app => ({
-      ...app,
-      dateFormatted: app.dateApprovisionnement ? new Date(app.dateApprovisionnement).toLocaleDateString() + ' ' + new Date(app.dateApprovisionnement).toLocaleTimeString() : 'N/A',
-      quantiteAjoutee: app.quantite || 0,
-      niveauApres: app.niveauApres || 0,
-      pompeInfo: app.pompe ? `P${app.pompe.codePompe}` : 'ST-SUPPLY',
-      stationName: this.stations.find(s => s.id === app.stationId)?.nom || `Station ${app.stationId}`
-    }));
+    return apps.map(app => {
+      const dateVal = app.dateApprovisionnement || app.dateAppro;
+      return {
+        ...app,
+        dateFormatted: dateVal ? new Date(dateVal).toLocaleString('fr-FR') : 'N/A',
+        quantiteAjoutee: app.quantite || 0,
+        niveauAvant: app.niveauAvant || 0,  
+        niveauApres: app.niveauApres || 0,
+        pompeInfo: app.pompe ? `P${app.pompe.codePompe}` : 'ST-SUPPLY',
+        stationName: this.stations.find(s => s.id === app.stationId)?.nom || `Station ${app.stationId}`
+      };
+    });
   }
 }
