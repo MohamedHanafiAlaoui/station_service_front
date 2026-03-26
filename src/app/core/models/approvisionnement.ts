@@ -1,8 +1,10 @@
-import { Station } from './station';
 export interface Approvisionnement {
   id?: number;
-  dateAppro: string;
   quantite: number;
-  fournisseur: string;
-  station: Station;
+  typeCarburant: 'ESSENCE' | 'DIESEL';
+  stationId: number;
+  dateApprovisionnement?: string;
+  dateAppro?: string; // For compatibility with some UI components
+  niveauApres?: number;
+  fournisseur?: string;
 }
