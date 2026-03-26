@@ -1,7 +1,10 @@
 import { Component } from '@angular/core';
+import { RouterModule } from '@angular/router';
+
 @Component({
   selector: 'app-pompes',
-  imports: [],
+  standalone: true,
+  imports: [RouterModule],
   templateUrl: './pompes.html',
   styleUrl: './pompes.css',
 })
