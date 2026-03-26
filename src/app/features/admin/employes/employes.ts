@@ -41,7 +41,6 @@ export class Employes implements OnInit {
       nom: ['', [Validators.required, Validators.minLength(2)]],
       prenom: ['', [Validators.required, Validators.minLength(2)]],
       username: ['', [Validators.required, Validators.minLength(4)]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
       stationId: ['', [Validators.required]]
     });
   }
@@ -137,14 +136,65 @@ export class Employes implements OnInit {
       actif: true
     };
     this.authService.registerEmploye(employeData).subscribe({
-      next: () => {
-        this.toast.success('Employé enregistré avec succès');
+      next: (response: any) => {
+        const generatedPassword = response.password;
+        
+        Swal.fire({
+          icon: 'success',
+          title: 'Employé Enregistré!',
+          html: `L'employé <b>${employeData.prenom} ${employeData.nom}</b> a été créé.<br><br><b>Mot de passe provisoire :</b> <code style="font-size: 1.2em; padding: 4px; background: #f3f4f6; border-radius: 4px; color: #4f46e5; border: 1px solid #e5e7eb;">${generatedPassword}</code>`,
+          confirmButtonText: 'Copier & Fermer',
+          confirmButtonColor: '#7c3aed'
+        });
+        
         this.closeModal();
         this.loadEmployes();
       },
       error: () => this.toast.error('Échec de la création de l\'employé')
     });
   }
+
+  onResetPassword(id: number) {
+    Swal.fire({
+      title: 'Réinitialiser le mot de passe',
+      text: "Saisissez le nouveau mot de passe pour cet employé :",
+      input: 'password',
+      inputPlaceholder: 'Nouveau mot de passe',
+      inputAttributes: {
+        autocapitalize: 'off',
+        autocorrect: 'off'
+      },
+      showCancelButton: true,
+      confirmButtonText: 'Réinitialiser',
+      cancelButtonText: 'Annuler',
+      confirmButtonColor: '#7c3aed',
+      cancelButtonColor: '#94a3b8',
+      inputValidator: (value) => {
+        if (!value) {
+          return 'Vous devez saisir un mot de passe !'
+        }
+        if (value.length < 8) {
+          return 'Le mot de passe doit contenir au moins 8 caractères.'
+        }
+        return null;
+      }
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.authService.resetPassword(id, result.value).subscribe({
+          next: () => {
+            Swal.fire({
+              icon: 'success',
+              title: 'Réussite!',
+              text: 'Le mot de passe a été réinitialisé avec succès.',
+              confirmButtonColor: '#7c3aed'
+            });
+          },
+          error: () => this.toast.error('Échec de la réinitialisation')
+        });
+      }
+    });
+  }
+
   async deleteEmploye(id: number | undefined): Promise<void> {
     if (!id) return;
     const result = await Swal.fire({
