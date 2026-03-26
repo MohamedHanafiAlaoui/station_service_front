@@ -1,14 +1,12 @@
-<div class="flex h-screen bg-[#f3f4f6] font-sans antialiased text-slate-800 overflow-hidden relative flex-col md:flex-row">
-  <app-admin-header 
-    [isSidebarOpen]="isSidebarOpen" 
-    (toggleSidebar)="toggleSidebar()">
+<div
+  class="flex h-screen bg-[#f3f4f6] font-sans antialiased text-slate-800 overflow-hidden relative flex-col md:flex-row">
+  <app-admin-header [isSidebarOpen]="isSidebarOpen" (toggleSidebar)="toggleSidebar()">
   </app-admin-header>
-  <div *ngIf="isSidebarOpen" 
-       (click)="closeSidebar()"
-       class="fixed inset-0 bg-gray-900 bg-opacity-50 z-20 transition-opacity md:hidden">
+  <div *ngIf="isSidebarOpen" (click)="closeSidebar()"
+    class="fixed inset-0 bg-gray-900 bg-opacity-50 z-20 transition-opacity md:hidden">
   </div>
-  <aside [ngClass]="{'translate-x-0': isSidebarOpen, '-translate-x-full': !isSidebarOpen}" 
-         class="w-64 bg-[#1e1b4b] shadow-xl z-30 flex-shrink-0 transition-transform duration-300 ease-in-out fixed inset-y-0 left-0 md:static md:translate-x-0">
+  <aside [ngClass]="{'translate-x-0': isSidebarOpen, '-translate-x-full': !isSidebarOpen}"
+    class="w-64 bg-[#1e1b4b] shadow-xl z-30 flex-shrink-0 transition-transform duration-300 ease-in-out fixed inset-y-0 left-0 md:static md:translate-x-0">
     <app-admin-sidebar></app-admin-sidebar>
   </aside>
   <main class="flex-1 flex flex-col overflow-hidden w-full relative h-[calc(100vh-4rem)] md:h-screen">
