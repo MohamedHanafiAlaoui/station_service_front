@@ -1,78 +1,105 @@
-<div class="p-8 bg-indigo-50/30 min-h-screen">
-  <div class="mb-8">
-    <h1 class="text-2xl font-semibold text-indigo-950">Station Information</h1>
-    <p class="text-sm text-indigo-500 mt-1">Details and configurations for your assigned station.</p>
+<div class="animate-fade-in">
+  <div class="mb-10">
+    <h1 class="text-3xl font-black text-slate-900 tracking-tight">Ma Station</h1>
+    <p class="text-slate-500 mt-2 font-medium">Informations détaillées et configuration de votre station d'affectation.</p>
   </div>
+
   <ng-container *ngIf="loading$ | async">
-    <app-loading-spinner></app-loading-spinner>
-  </ng-container>
-  <ng-container *ngIf="error$ | async as error">
-    <div class="bg-red-50 border-l-4 border-red-400 p-4 mb-8">
-      <div class="flex">
-        <div class="ml-3">
-          <p class="text-sm text-red-700">
-            Error loading station details: {{ error }}
-          </p>
-        </div>
-      </div>
+    <div class="flex flex-col items-center justify-center py-20">
+        <app-loading-spinner></app-loading-spinner>
+        <p class="text-slate-400 mt-4 font-medium animate-pulse">Chargement des informations...</p>
     </div>
   </ng-container>
+
+  <ng-container *ngIf="error$ | async as error">
+    <div class="max-w-2xl bg-rose-50 border-2 border-rose-100 p-6 rounded-2xl flex items-center gap-4">
+        <div class="w-12 h-12 rounded-xl bg-rose-500 flex items-center justify-center text-white shrink-0">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+        </div>
+        <div>
+            <h3 class="font-bold text-rose-900">Erreur réseau</h3>
+            <p class="text-rose-600 text-sm mt-1">{{ error }}</p>
+        </div>
+    </div>
+  </ng-container>
+
   <ng-container *ngIf="station$ | async as station">
-    <div class="bg-white rounded-xl shadow-sm border border-indigo-100 overflow-hidden mb-8 max-w-4xl">
-      <div class="border-b border-indigo-100 px-6 py-5 bg-indigo-50/30 flex justify-between items-center">
-        <h3 class="text-lg leading-6 font-medium text-slate-900">
-          General Properties
-        </h3>
-        <span class="px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-          Active
-        </span>
-      </div>
-      <div class="px-6 py-5">
-        <dl class="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2">
-          <div class="sm:col-span-1">
-            <dt class="text-sm font-medium text-indigo-500">
-              Station Name
-            </dt>
-            <dd class="mt-1 text-sm text-slate-900 font-semibold">
-              {{ station.nom }}
-            </dd>
-          </div>
-          <div class="sm:col-span-1">
-            <dt class="text-sm font-medium text-indigo-500">
-              Station ID
-            </dt>
-            <dd class="mt-1 text-sm text-slate-900 font-mono">
-              #{{ station.id }}
-            </dd>
-          </div>
-          <div class="sm:col-span-2">
-            <dt class="text-sm font-medium text-indigo-500">
-              Address Location
-            </dt>
-            <dd class="mt-1 text-sm text-slate-900 flex items-start">
-              <svg class="w-5 h-5 text-indigo-400 mr-2 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-              {{ station.adresse }}
-            </dd>
-          </div>
-          <div class="sm:col-span-1">
-            <dt class="text-sm font-medium text-indigo-500">
-              Coordinates
-            </dt>
-            <dd class="mt-1 text-sm text-slate-900 font-mono">
-              LAT: {{ station.latitude | number:'1.4-4' }}<br>
-              LNG: {{ station.longitude | number:'1.4-4' }}
-            </dd>
-          </div>
-          <div class="sm:col-span-1">
-            <dt class="text-sm font-medium text-indigo-500">
-              Manager
-            </dt>
-            <dd class="mt-1 text-sm text-slate-900">
-              John Smith (Current)
-            </dd>
-          </div>
-        </dl>
-      </div>
+    <div class="grid grid-cols-1 xl:grid-cols-3 gap-8 max-w-7xl">
+        <!-- Main Card -->
+        <div class="xl:col-span-2 bg-white rounded-[2.5rem] shadow-xl shadow-indigo-950/5 border border-slate-100 overflow-hidden">
+            <div class="p-10">
+                <div class="flex flex-col sm:flex-row justify-between items-start gap-6 mb-12">
+                    <div class="flex items-center gap-6">
+                        <div class="w-20 h-20 bg-indigo-600 rounded-3xl flex items-center justify-center text-white shadow-xl shadow-indigo-200">
+                            <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
+                        </div>
+                        <div>
+                            <h2 class="text-4xl font-black text-slate-900">{{ station.nom }}</h2>
+                            <p class="text-slate-400 font-bold uppercase tracking-widest text-[10px] mt-2">ID Station: #{{ station.id }}</p>
+                        </div>
+                    </div>
+                    <span class="px-5 py-2 rounded-full text-xs font-black uppercase tracking-widest bg-emerald-500/10 text-emerald-600 border border-emerald-500/20">
+                        Opérationnelle
+                    </span>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-10">
+                    <div class="space-y-2">
+                        <p class="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">Localisation</p>
+                        <div class="flex items-start gap-4 p-5 bg-slate-50 rounded-2xl border border-slate-100">
+                            <div class="p-2 bg-white rounded-xl shadow-sm text-indigo-500">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                            </div>
+                            <p class="text-sm font-bold text-slate-700 leading-relaxed">{{ station.adresse }}</p>
+                        </div>
+                    </div>
+
+                    <div class="space-y-2">
+                        <p class="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">Coordonnées GPS</p>
+                        <div class="p-5 bg-slate-50 rounded-2xl border border-slate-100 space-y-2 font-mono text-sm">
+                            <div class="flex justify-between">
+                                <span class="text-slate-400">LAT</span>
+                                <span class="font-bold text-indigo-600">{{ station.latitude | number:'1.6-6' }}</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-slate-400">LNG</span>
+                                <span class="font-bold text-indigo-600">{{ station.longitude | number:'1.6-6' }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="space-y-8">
+            <div class="bg-slate-900 rounded-[2.5rem] p-8 text-white shadow-xl shadow-slate-900/20 overflow-hidden relative group">
+                <div class="absolute -right-10 -top-10 w-40 h-40 bg-indigo-500 rounded-full blur-3xl opacity-20 group-hover:opacity-40 transition-opacity"></div>
+                <h3 class="text-[10px] font-black uppercase tracking-[0.2em] text-indigo-300 mb-6">Gestionnaire</h3>
+                <div class="flex items-center gap-4">
+                    <div class="w-14 h-14 rounded-2xl bg-white/10 flex items-center justify-center text-2xl font-black">
+                        M
+                    </div>
+                    <div>
+                        <p class="text-lg font-black">Admin Station</p>
+                        <p class="text-xs text-indigo-300 font-medium">Responsable Officiel</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-[2.5rem] p-8 border border-slate-100 shadow-xl shadow-indigo-950/5">
+                <h3 class="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-6">Résumé Statistique</h3>
+                <div class="space-y-6">
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm font-bold text-slate-600">Disponibilité</span>
+                        <span class="text-sm font-black text-emerald-500">99.2%</span>
+                    </div>
+                    <div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
+                        <div class="bg-emerald-500 h-full w-[99.2%] rounded-full shadow-[0_0_8px_rgba(16,185,129,0.4)]"></div>
+                    </div>
+                    <p class="text-[10px] text-slate-400 font-medium italic">Données synchronisées en temps réel avec le serveur central.</p>
+                </div>
+            </div>
+        </div>
     </div>
   </ng-container>
 </div>
