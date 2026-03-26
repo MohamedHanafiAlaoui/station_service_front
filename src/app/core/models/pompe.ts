@@ -7,4 +7,5 @@ export interface Pompe {
   prixParLitre: number;
   enService: boolean;
   stationId: number;
+  seuilAlerte?: number;
 }
