@@ -6,4 +6,5 @@ export interface ClientDto {
   badgeRFID: string;
   solde?: number;
   actif?: boolean;
+  password?: string;
 }
