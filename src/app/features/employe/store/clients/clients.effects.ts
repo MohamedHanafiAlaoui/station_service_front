@@ -5,6 +5,7 @@ import { catchError, map, mergeMap, tap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { ClientService } from '../../../../core/services/client';
 import { ToastService } from '../../../../core/services/toast.service';
+import Swal from 'sweetalert2';
 import * as ClientsActions from './clients.actions';
 @Injectable()
 export class ClientsEffects {
@@ -53,8 +54,15 @@ export class ClientsEffects {
     this.actions$.pipe(
       ofType(ClientsActions.createClientSuccess),
       tap(({ client }) => {
-        this.toastService.success(`Client ${client.prenom} ${client.nom} created successfully!`);
-        this.router.navigate(['/employe/clients']);
+        Swal.fire({
+          icon: 'success',
+          title: 'Client Créé!',
+          html: `Le client <b>${client.prenom} ${client.nom}</b> a été créé avec succès.<br><br><b>Mot de passe généré :</b> <code style="font-size: 1.2em; padding: 4px; background: #e2e8f0; border-radius: 4px;">${client.password || 'Non spécifié'}</code>`,
+          confirmButtonText: 'OK',
+          confirmButtonColor: '#4f46e5'
+        }).then(() => {
+          this.router.navigate(['/employe/clients']);
+        });
       })
     ),
     { dispatch: false }
