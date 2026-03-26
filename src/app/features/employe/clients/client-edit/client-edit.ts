@@ -6,12 +6,11 @@ import { ActivatedRoute, RouterModule } from '@angular/router';
 import * as ClientsActions from '../../store/clients/clients.actions';
 import { selectAllClients, selectClientsActionLoading } from '../../store/clients/clients.selectors';
 import { Observable, take } from 'rxjs';
-import { InputFieldComponent } from '../../../../shared/components/input-field/input-field.component';
 import { ClientDto } from '../../../../core/models/client';
 @Component({
   selector: 'app-client-edit',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterModule, InputFieldComponent],
+  imports: [CommonModule, ReactiveFormsModule, RouterModule],
   templateUrl: './client-edit.html',
   styleUrl: './client-edit.css'
 })
@@ -28,8 +27,7 @@ export class ClientEdit implements OnInit {
     this.clientForm = this.fb.group({
       nom:       ['', [Validators.required, Validators.minLength(2)]],
       prenom:    ['', [Validators.required, Validators.minLength(2)]],
-      username:  ['', [Validators.required, Validators.minLength(3)]],
-      badgeRFID: ['', [Validators.required]]
+      username:  ['', [Validators.required, Validators.minLength(3)]]
     });
   }
   ngOnInit(): void {
