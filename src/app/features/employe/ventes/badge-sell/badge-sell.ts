@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { BadgeService } from '../../../../core/services/badge.service';
-import { InputFieldComponent } from '../../../../shared/components/input-field/input-field.component';
+import { AuthService } from '../../../../core/services/Auth';
 import { Router, RouterModule } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { selectAllPompes } from '../../store/pompes/pompes.selectors';
@@ -12,7 +12,7 @@ import { Observable } from 'rxjs';
 @Component({
   selector: 'app-badge-sell',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, InputFieldComponent, RouterModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterModule],
   templateUrl: './badge-sell.html',
   styleUrl: './badge-sell.css'
 })
@@ -26,7 +26,8 @@ export class BadgeSell {
     private fb: FormBuilder,
     private badgeService: BadgeService,
     private router: Router,
-    private store: Store
+    private store: Store,
+    private authService: AuthService
   ) {
     this.pompes$ = this.store.select(selectAllPompes);
     this.sellForm = this.fb.group({
@@ -36,7 +37,10 @@ export class BadgeSell {
     });
   }
   ngOnInit(): void {
-    this.store.dispatch(PompesActions.loadPompesByStation({ stationId: 1 }));
+    const stationId = this.authService.getStationId();
+    if (stationId) {
+      this.store.dispatch(PompesActions.loadPompesByStation({ stationId }));
+    }
   }
   onSubmit(): void {
     if (this.sellForm.valid) {
