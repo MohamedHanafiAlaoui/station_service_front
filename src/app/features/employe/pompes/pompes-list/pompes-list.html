@@ -1,32 +1,122 @@
-<div class="p-8 bg-indigo-50/30 min-h-screen">
-  <div class="mb-8 flex justify-between items-center">
+<div class="animate-fade-in">
+  <div class="mb-10 flex flex-col md:flex-row md:justify-between md:items-end gap-6">
     <div>
-      <h1 class="text-2xl font-semibold text-indigo-950">Pumps Management</h1>
-      <p class="text-sm text-indigo-500 mt-1">Manage and monitor all pumps for your station.</p>
+      <h1 class="text-3xl font-black text-slate-900 tracking-tight">Gestion des Pompes</h1>
+      <p class="text-slate-500 mt-2 font-medium">Surveillez et gérez l'état de vos pompes en temps réel.</p>
+    </div>
+    <div class="flex items-center gap-3">
+      <div class="px-4 py-2 bg-white rounded-xl shadow-sm border border-slate-100 flex items-center gap-3">
+        <div class="w-2 h-2 rounded-full bg-indigo-500 animate-pulse shadow-[0_0_8px_rgba(99,102,241,0.5)]"></div>
+        <span class="text-[10px] font-black text-slate-600 uppercase tracking-[0.2em]">Système Actif</span>
+      </div>
     </div>
   </div>
+
   <ng-container *ngIf="loading$ | async">
-    <app-loading-spinner></app-loading-spinner>
+    <div class="flex flex-col items-center justify-center py-20">
+      <app-loading-spinner></app-loading-spinner>
+      <p class="text-slate-400 mt-4 font-medium animate-pulse">Chargement des pompes...</p>
+    </div>
   </ng-container>
+
   <ng-container *ngIf="error$ | async as error">
-    <div class="bg-red-50 border-l-4 border-red-400 p-4 mb-8">
-      <div class="flex">
-        <div class="ml-3">
-          <p class="text-sm text-red-700">
-            Error loading pumps: {{ error }}
-          </p>
-        </div>
+    <div class="max-w-2xl mx-auto bg-rose-50 border-2 border-rose-100 p-6 rounded-2xl flex items-center gap-4">
+      <div class="w-12 h-12 rounded-xl bg-rose-500 flex items-center justify-center text-white shrink-0">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z">
+          </path>
+        </svg>
+      </div>
+      <div>
+        <h3 class="font-bold text-rose-900">Erreur de chargement</h3>
+        <p class="text-rose-600 text-sm mt-1">{{ error }}</p>
       </div>
     </div>
   </ng-container>
+
   <ng-container *ngIf="!(loading$ | async) && !(error$ | async)">
-    <div *ngIf="pompes$ | async as pompes">
-      <app-table 
-        [columns]="tableColumns" 
-        [data]="getMappedPompes(pompes)" 
-        [actions]="tableActions"
-        (actionClick)="handleAction($event)">
-      </app-table>
+    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8" *ngIf="pompes$ | async as pompes">
+      <div *ngFor="let pompe of pompes"
+        class="group bg-white rounded-3xl border border-slate-100 shadow-xl shadow-slate-200/50 overflow-hidden transition-all duration-300 hover:shadow-2xl hover:shadow-indigo-500/10 hover:-translate-y-1">
+
+        <div class="p-8">
+          <div class="flex justify-between items-start mb-8">
+            <div
+              [ngClass]="getFuelLevelPercentage(pompe) > 20 ? 'bg-emerald-50 text-emerald-600 border-emerald-100' : 'bg-rose-50 text-rose-600 border-rose-100'"
+              class="w-16 h-16 rounded-2xl flex items-center justify-center border-2 font-black text-2xl shadow-sm transition-transform group-hover:scale-110">
+              P{{ pompe.codePompe }}
+            </div>
+            <div class="flex flex-col items-end">
+              <span
+                [ngClass]="getFuelLevelPercentage(pompe) > 20 ? 'bg-emerald-500/10 text-emerald-600' : 'bg-rose-500/10 text-rose-600'"
+                class="px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest border border-current/20 mb-2">
+                {{ getFuelLevelPercentage(pompe) > 20 ? 'En Service' : 'Niveau Bas' }}
+              </span>
+              <h2 class="text-xl font-black text-slate-900">{{ pompe.typeCarburant }}</h2>
+            </div>
+          </div>
+
+          <div class="space-y-6">
+            <div>
+              <div class="flex justify-between items-end mb-3">
+                <span class="text-[10px] font-black uppercase tracking-widest text-slate-400">Remplissage</span>
+                <span class="text-lg font-black"
+                  [ngClass]="getFuelLevelPercentage(pompe) > 20 ? 'text-emerald-500' : 'text-rose-500'">
+                  {{ getFuelLevelPercentage(pompe) }}%
+                </span>
+              </div>
+              <div class="w-full bg-slate-100 h-3 rounded-full overflow-hidden">
+                <div
+                  [ngClass]="getFuelLevelPercentage(pompe) > 20 ? 'bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.5)]' : 'bg-rose-500 shadow-[0_0_10px_rgba(244,63,94,0.5)]'"
+                  class="h-full rounded-full transition-all duration-1000"
+                  [style.width.%]="getFuelLevelPercentage(pompe)"></div>
+              </div>
+            </div>
+
+            <div class="flex items-center gap-4 py-4 px-5 bg-slate-50 rounded-2xl border border-slate-100">
+              <div class="p-2 bg-indigo-500/10 text-indigo-600 rounded-xl">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10">
+                  </path>
+                </svg>
+              </div>
+              <div>
+                <p class="text-[10px] font-black uppercase tracking-widest text-slate-400">Capacité Actuelle</p>
+                <p class="text-sm font-bold text-slate-900">{{ pompe.niveauActuel | number }} / {{ pompe.capaciteMax |
+                  number }} Litres</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="px-8 py-6 bg-slate-50/50 border-t border-slate-100 flex gap-4">
+          <button (click)="navigateToDetails(pompe.id)"
+            class="flex-1 px-4 py-3 bg-white border border-slate-200 text-slate-700 rounded-xl text-xs font-black uppercase tracking-widest hover:bg-slate-100 transition-all active:scale-95">
+            Détails
+          </button>
+          <button (click)="navigateToAddFuel(pompe.id)"
+            [ngClass]="getFuelLevelPercentage(pompe) > 20 ? 'bg-indigo-600 hover:bg-indigo-700 shadow-indigo-200' : 'bg-rose-600 hover:bg-rose-700 shadow-rose-200'"
+            class="flex-[2] px-4 py-3 text-white rounded-xl text-xs font-black uppercase tracking-widest transition-all shadow-lg active:scale-95">
+            Ajouter Carburant
+          </button>
+        </div>
+      </div>
+
+      <div *ngIf="pompes.length === 0" class="col-span-full py-20 text-center">
+        <div class="max-w-sm mx-auto bg-slate-50 rounded-3xl p-10 border-2 border-dashed border-slate-200">
+          <div class="w-20 h-20 bg-white rounded-full flex items-center justify-center mx-auto mb-6 shadow-sm">
+            <svg class="w-10 h-10 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10">
+              </path>
+            </svg>
+          </div>
+          <h3 class="font-black text-slate-900 uppercase tracking-widest text-sm">Aucune Pompe</h3>
+          <p class="text-slate-500 text-xs mt-2 font-medium">Votre station ne dispose d'aucune pompe enregistrée.</p>
+        </div>
+      </div>
     </div>
   </ng-container>
 </div>
