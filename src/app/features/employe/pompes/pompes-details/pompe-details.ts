@@ -10,7 +10,7 @@ import { CardComponent } from '../../../../shared/components/card/card.component
 @Component({
   selector: 'app-pompe-details',
   standalone: true,
-  imports: [CommonModule, RouterModule, LoadingSpinnerComponent, CardComponent],
+  imports: [CommonModule, RouterModule, LoadingSpinnerComponent],
   templateUrl: './pompe-details.html',
   styleUrl: './pompe-details.css'
 })
