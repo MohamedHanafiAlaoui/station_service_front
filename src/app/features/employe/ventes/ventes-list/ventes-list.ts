@@ -24,13 +24,13 @@ export class VentesList implements OnInit {
   stationId: number | null = null;
   filterForm: FormGroup;
   tableColumns = [
-    { field: 'id', header: 'Sale ID' },
-    { field: 'date', header: 'Date & Time' },
-    { field: 'quantite', header: 'Quantity (L)' },
-    { field: 'prixUnitaire', header: 'Unit Price (MAD)' },
+    { field: 'id', header: 'ID Vente' },
+    { field: 'date', header: 'Date & Heure' },
+    { field: 'pompeInfo', header: 'Pompe' },
+    { field: 'quantite', header: 'Quantité (L)' },
+    { field: 'prixUnitaire', header: 'Prix/L (MAD)' },
     { field: 'montantTotal', header: 'Total (MAD)' },
-    { field: 'pompeInfo', header: 'Pump' },
-    { field: 'typePaiement', header: 'Payment Type' }
+    { field: 'typePaiement', header: 'Type' }
   ];
   constructor(private store: Store, private fb: FormBuilder, private authService: AuthService) {
     this.ventes$ = this.store.select(selectAllVentes);
@@ -67,11 +67,11 @@ export class VentesList implements OnInit {
   getMappedData(data: Vente[]): any[] {
     return data.map(item => ({
       ...item,
-      date: new Date(item.dateVente || '').toLocaleString(),
+      date: new Date(item.dateVente || '').toLocaleString('fr-FR'),
       montantTotal: Number(item.montant || 0).toFixed(2),
-      prixUnitaire: Number((item.montant || 0) / (item.quantite || 1)).toFixed(2),
-      pompeInfo: item.pompe ? `P${item.pompe.codePompe} (${item.pompe.typeCarburant})` : 'N/A',
-      typePaiement: item.client ? 'Badge' : 'Cash'  
+      prixUnitaire: item.quantite > 0 ? Number((item.montant || 0) / item.quantite).toFixed(2) : '0.00',
+      pompeInfo: item.pompe ? `Pompe ${item.pompe.codePompe}` : 'N/A',
+      typePaiement: item.client ? 'Badge Client' : 'Espèces'  
     }));
   }
 }
