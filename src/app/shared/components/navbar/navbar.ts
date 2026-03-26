@@ -4,7 +4,7 @@ import { AuthService } from '../../../core/services/Auth';
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [ AsyncPipe ],
+  imports: [],
   templateUrl: './navbar.html',
   styleUrl: './navbar.css',
 })
