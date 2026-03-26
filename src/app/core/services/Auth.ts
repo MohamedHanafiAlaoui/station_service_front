@@ -52,6 +52,18 @@ export class AuthService {
       catchError(err => throwError(() => this.errorService.getMessage(err)))
     );
   }
+
+  changePassword(data: any) {
+    return this.http.post(Api.CHANGE_PASSWORD, data, { responseType: 'text' }).pipe(
+      catchError(err => throwError(() => this.errorService.getMessage(err)))
+    );
+  }
+
+  resetPassword(userId: number, password: String): Observable<any> {
+    return this.http.post(Api.RESET_PASSWORD(userId), { password }).pipe(
+      catchError(err => throwError(() => this.errorService.getMessage(err)))
+    );
+  }
   getAllEmployes(): Observable<EmployeDto[]> {
     return this.http.get<EmployeDto[]>(Api.EMPLOYES);
   }
