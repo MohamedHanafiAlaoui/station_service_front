@@ -107,12 +107,15 @@
                     <button (click)="openDrawer(emp)" class="btn-icon-vibrant" title="Staff Profile">
                       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
                     </button>
+                    <button (click)="onResetPassword(emp.id!)" class="btn-icon-vibrant bg-amber-50 text-amber-600 hover:bg-amber-100" title="Reset Password">
+                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"></path></svg>
+                    </button>
                     @if (emp.actif !== false) {
-                      <button (click)="deleteEmploye(emp.id)" class="btn-icon-vibrant bg-rose-50 text-rose-600 hover:bg-rose-100" title="Deactivate">
+                      <button (click)="deleteEmploye(emp.id!)" class="btn-icon-vibrant bg-rose-50 text-rose-600 hover:bg-rose-100" title="Deactivate">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"></path></svg>
                       </button>
                     } @else {
-                      <button (click)="restoreEmploye(emp.id)" class="btn-icon-vibrant bg-emerald-50 text-emerald-600 hover:bg-emerald-100" title="Activate">
+                      <button (click)="restoreEmploye(emp.id!)" class="btn-icon-vibrant bg-emerald-50 text-emerald-600 hover:bg-emerald-100" title="Activate">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
                       </button>
                     }
@@ -250,10 +253,7 @@
                  <input formControlName="username" type="text" class="input-premium pl-8" placeholder="jane.smith">
               </div>
             </div>
-            <div class="md:col-span-2 space-y-1.5 pt-2">
-              <label class="text-xs font-bold text-slate-600 ml-1 uppercase">Access Password</label>
-              <input formControlName="password" type="password" class="input-premium" placeholder="••••••••">
-            </div>
+
             <div class="md:col-span-2 space-y-1.5 pt-2">
               <label class="text-xs font-bold text-slate-600 ml-1 uppercase">Operational Hub Assignment</label>
               <div class="relative">
