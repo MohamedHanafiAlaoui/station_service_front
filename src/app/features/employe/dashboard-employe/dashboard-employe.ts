@@ -11,14 +11,13 @@ import * as VentesActions from '../store/ventes/ventes.actions';
 import * as ClientsActions from '../store/clients/clients.actions';
 import { Pompe } from '../../../core/models/pompe';
 import { Router, RouterModule } from '@angular/router';
-import { CardComponent } from '../../../shared/components/card/card.component';
 import { LoadingSpinnerComponent } from '../../../shared/components/loading-spinner/loading-spinner.component';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BadgeService } from '../../../core/services/badge.service';
 @Component({
   selector: 'app-dashboard-employe',
   standalone: true,
-  imports: [CommonModule, CardComponent, LoadingSpinnerComponent, ReactiveFormsModule, RouterModule],
+  imports: [CommonModule, LoadingSpinnerComponent, ReactiveFormsModule, RouterModule],
   templateUrl: './dashboard-employe.html',
   styleUrl: './dashboard-employe.css',
 })
@@ -53,14 +52,22 @@ export class DashboardEmploye implements OnInit {
   }
   ngOnInit(): void {
     const user = this.authService.getUser();
+    console.log('DashboardEmploye: Initializing for user:', user);
     if (user) {
       this.employeeName = `${user.nom} ${user.prenom}`;
       this.stationId = this.authService.getStationId();
+      console.log('DashboardEmploye: Station ID from Auth:', this.stationId);
       this.loadDashboardData();
+    } else {
+      console.warn('DashboardEmploye: No user found in session!');
     }
   }
   loadDashboardData(): void {
-    if (!this.stationId) return;
+    if (!this.stationId) {
+      console.warn('DashboardEmploye: Skipping data load - No Station ID');
+      return;
+    }
+    console.log('DashboardEmploye: Loading data for station:', this.stationId);
     this.store.dispatch(PompesActions.loadPompesByStation({ stationId: this.stationId }));
     const today = new Date().toISOString().split('T')[0];
     this.store.dispatch(VentesActions.loadVentesStats({ 
