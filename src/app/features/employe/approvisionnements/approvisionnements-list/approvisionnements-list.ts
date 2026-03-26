@@ -14,6 +14,7 @@ import { AuthService } from '../../../../core/services/Auth';
   imports: [CommonModule, LoadingSpinnerComponent, TableComponent],
   templateUrl: './approvisionnements-list.html',
   styleUrl: './approvisionnements-list.css',
+  preserveWhitespaces: true
 })
 export class ApprovisionnementsList implements OnInit {
   approvisionnements$: Observable<Approvisionnement[]>;
@@ -21,11 +22,11 @@ export class ApprovisionnementsList implements OnInit {
   error$: Observable<string | null>;
   stationId: number | null = null;
   tableColumns = [
-    { field: 'id', header: 'ID' },
-    { field: 'dateAppro', header: 'Scheduled Date' },
-    { field: 'quantite', header: 'Quantity (L)' },
-    { field: 'fournisseur', header: 'Supplier' },
-    { field: 'status', header: 'Status' } 
+    { field: 'id', header: 'ID Appro' },
+    { field: 'dateFormatted', header: 'Date & Heure' },
+    { field: 'fournisseur', header: 'Fournisseur' },
+    { field: 'quantite', header: 'Quantité (L)' },
+    { field: 'statusLabel', header: 'État' } 
   ];
   constructor(private store: Store, private authService: AuthService) {
     this.approvisionnements$ = this.store.select(selectAllApprovisionnements);
@@ -39,11 +40,14 @@ export class ApprovisionnementsList implements OnInit {
     }
   }
   getMappedData(data: Approvisionnement[]): any[] {
-    return data.map(item => ({
-      ...item,
-      dateAppro: new Date(item.dateAppro || '').toLocaleDateString(),
-      fournisseur: item.fournisseur || 'Unknown',
-      status: 'Completed' 
-    }));
+    return data.map(item => {
+      const dateVal = item.dateApprovisionnement || item.dateAppro;
+      return {
+        ...item,
+        dateFormatted: dateVal ? new Date(dateVal).toLocaleString('fr-FR') : 'Date Inconnue',
+        fournisseur: item.fournisseur || 'Distributeur Officiel',
+        statusLabel: 'Terminé' 
+      };
+    });
   }
 }
