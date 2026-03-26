@@ -6,6 +6,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { ClientService } from '../../../core/services/client';
 import { ToastService } from '../../../core/services/toast.service';
 import { ClientDto } from '../../../core/models/client';
+import { AuthService } from '../../../core/services/Auth';
 @Component({
   selector: 'app-clients',
   standalone: true,
@@ -18,6 +19,7 @@ export class Clients implements OnInit {
   private readonly toast = inject(ToastService);
   private readonly fb = inject(FormBuilder);
   private readonly cdr = inject(ChangeDetectorRef);
+  private readonly authService = inject(AuthService);
   clients: ClientDto[] = [];
   filteredClients: ClientDto[] = [];
   pagedClients: ClientDto[] = [];
@@ -117,8 +119,7 @@ export class Clients implements OnInit {
       this.clientForm.patchValue({
         nom: client.nom,
         prenom: client.prenom,
-        username: client.username,
-        badgeRFID: client.badgeRFID
+        username: client.username
       });
     } else {
       this.selectedClientId = undefined;
@@ -134,8 +135,16 @@ export class Clients implements OnInit {
     const clientData: ClientDto = this.clientForm.value;
     if (this.modalMode === 'create') {
       this.clientService.createClient(clientData).subscribe({
-        next: () => {
-          this.toast.success('Client créé avec succès');
+        next: (createdClient) => {
+          Swal.fire({
+            icon: 'success',
+            title: 'Client Créé!',
+            html: `Le client <b>${createdClient.prenom} ${createdClient.nom}</b> a été créé avec succès.<br><br><b>Mot de passe généré :</b> <code style="font-size: 1.2em; padding: 4px; background: #e2e8f0; border-radius: 4px; color: #1e293b;">${createdClient.password || 'Non spécifié'}</code>`,
+            confirmButtonText: 'OK',
+            confirmButtonColor: '#4f46e5',
+            background: '#ffffff',
+            color: '#1f2937'
+          });
           this.closeModal();
           this.loadClients();
         },
@@ -192,6 +201,48 @@ export class Clients implements OnInit {
       }
     });
   }
+
+  onResetPassword(id: number) {
+    Swal.fire({
+      title: 'Réinitialiser le mot de passe',
+      text: "Saisissez le nouveau mot de passe pour ce client :",
+      input: 'password',
+      inputPlaceholder: 'Nouveau mot de passe',
+      inputAttributes: {
+        autocapitalize: 'off',
+        autocorrect: 'off'
+      },
+      showCancelButton: true,
+      confirmButtonText: 'Réinitialiser',
+      cancelButtonText: 'Annuler',
+      confirmButtonColor: '#7c3aed',
+      cancelButtonColor: '#94a3b8',
+      inputValidator: (value) => {
+        if (!value) {
+          return 'Vous devez saisir un mot de passe !'
+        }
+        if (value.length < 8) {
+          return 'Le mot de passe doit contenir au moins 8 caractères.'
+        }
+        return null;
+      }
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.authService.resetPassword(id, result.value).subscribe({
+          next: () => {
+            Swal.fire({
+              icon: 'success',
+              title: 'Réussite!',
+              text: 'Le mot de passe a été réinitialisé avec succès.',
+              confirmButtonColor: '#7c3aed'
+            });
+          },
+          error: () => this.toast.error('Échec de la réinitialisation')
+        });
+      }
+    });
+  }
+
   restoreClient(id: number | undefined): void {
     if (!id) return;
     Swal.fire({
