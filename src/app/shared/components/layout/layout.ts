@@ -1,12 +1,23 @@
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { Sidebar } from '../sidebar/sidebar';
-import { Navbar } from '../navbar/navbar';
 import { RouterOutlet } from '@angular/router';
+
 @Component({
   selector: 'app-layout',
   standalone: true,
-  imports: [Sidebar, Navbar, RouterOutlet],
+  imports: [CommonModule, Sidebar, RouterOutlet],
   templateUrl: './layout.html',
   styleUrl: './layout.css',
 })
-export class Layout {}
+export class Layout {
+  isSidebarOpen = false;
+
+  toggleSidebar(): void {
+    this.isSidebarOpen = !this.isSidebarOpen;
+  }
+
+  closeSidebar(): void {
+    this.isSidebarOpen = false;
+  }
+}
