@@ -6,11 +6,10 @@ import { Observable } from 'rxjs';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import * as ClientsActions from '../../store/clients/clients.actions';
 import { selectClientById, selectClientsActionLoading, selectClientsError } from '../../store/clients/clients.selectors';
-import { InputFieldComponent } from '../../../../shared/components/input-field/input-field.component';
 @Component({
   selector: 'app-clients-recharge',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, InputFieldComponent],
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './clients-recharge.html',
   styleUrl: './clients-recharge.css'
 })
