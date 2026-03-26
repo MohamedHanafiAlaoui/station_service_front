@@ -4,6 +4,8 @@ export class Api {
   public static readonly LOGIN = `${Api.AUTH}/login`;
   public static readonly REGISTER = `${Api.AUTH}/register`;
   public static readonly REGISTER_EMPLOYE = `${Api.AUTH}/register/Employe`;
+  public static readonly CHANGE_PASSWORD = `${Api.AUTH}/change-password`;
+  public static readonly RESET_PASSWORD = (id: number) => `${Api.AUTH}/reset-password/${id}`;
   public static readonly EMPLOYES = `${Api.AUTH}/employes`;
   public static readonly USERS = `${Api.BASE}/users`;
   public static readonly UPDATE_NAME = (id: number) => `${Api.AUTH}/update/${id}`;
@@ -14,5 +16,6 @@ export class Api {
   public static readonly VENTES = `${Api.BASE}/ventes`;
   public static readonly APPROVISIONNEMENTS = `${Api.BASE}/approvisionnements`;
   public static readonly JOURNALS = `${Api.BASE}/journals`;
+  public static readonly RECONCILIATION = `${Api.BASE}/reconciliation`;
   public static readonly BADGE = `${Api.BASE}/badge`;
 }

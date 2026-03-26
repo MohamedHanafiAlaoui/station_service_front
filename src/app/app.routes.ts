@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { authGuard } from './core/guards/auth-guard';
 import { loginRedirectGuard } from './core/guards/login-redirect-guard';
+
 export const routes: Routes = [
   {
     path: 'auth',
@@ -35,8 +36,8 @@ export const routes: Routes = [
     loadChildren: () =>
       import('./features/client/client.routes').then(m => m.CLIENT_ROUTES),
     loadComponent: () =>
-      import('./shared/components/layout/layout')
-        .then(m => m.Layout),
+      import('./features/client/clientlayout/clientlayout')
+        .then(m => m.Clientlayout),
   },
   { path: '', redirectTo: 'auth', pathMatch: 'full' }
 ];
