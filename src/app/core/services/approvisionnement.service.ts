@@ -25,19 +25,4 @@ export class ApprovisionnementService {
   createApprovisionnement(app: Approvisionnement): Observable<Approvisionnement> {
     return this.http.post<Approvisionnement>(Api.APPROVISIONNEMENTS, app);
   }
-
-  // Reconciliation methods
-  getBookStock(stationId: number, type: string): Observable<number> {
-    return this.http.get<number>(`${Api.RECONCILIATION}/book-stock`, {
-      params: { stationId, type }
-    });
-  }
-
-  performReconciliation(dto: any): Observable<any> {
-    return this.http.post<any>(Api.RECONCILIATION, dto);
-  }
-
-  getReconciliationHistory(stationId: number): Observable<any[]> {
-    return this.http.get<any[]>(`${Api.RECONCILIATION}/station/${stationId}/history`);
-  }
 }
