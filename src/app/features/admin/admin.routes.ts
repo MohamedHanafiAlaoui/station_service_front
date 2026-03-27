@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
 import { Approvisionnements } from './approvisionnements/approvisionnements';
 import { Ventes } from './ventes/ventes';
-import { Pompes } from '../../pages/admin/pompes/pompes';
+import { Pompes } from './pompes/pompes';
 import { Clients } from './clients/clients';
 import { Stations } from './stations/stations';
 import { Dashboard } from './dashboard/dashboard';

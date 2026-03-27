@@ -79,6 +79,10 @@ export class AuthService {
     return localStorage.getItem(this.TOKEN_KEY);
   }
   logout() {
+    this.http.post(Api.LOGOUT, {}).subscribe({
+      next: () => console.log('Logout documented on backend'),
+      error: (err) => console.error('Backend logout notification failed', err)
+    });
     localStorage.removeItem(this.TOKEN_KEY);
     localStorage.removeItem(this.ROLE_KEY);
     localStorage.removeItem(this.STATION_ID_KEY);
