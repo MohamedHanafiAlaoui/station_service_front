@@ -1,0 +1,69 @@
+<div class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 backdrop-blur-sm transition-opacity">
+  <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg mx-4 overflow-hidden animate-slide-up">
+    <div class="px-6 py-4 border-b border-slate-100 flex justify-between items-center bg-slate-50">
+      <h3 class="text-lg font-bold text-slate-800 flex items-center gap-2">
+        <div class="w-8 h-8 rounded-lg bg-indigo-100 text-indigo-600 flex items-center justify-center">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v8l9-11h-7z"></path></svg>
+        </div>
+        {{ mode === 'create' ? 'Ajouter une Pompe' : 'Modifier la Pompe' }}
+      </h3>
+      <button (click)="onCancel()" class="text-slate-400 hover:text-slate-600 hover:bg-slate-200 p-1.5 rounded-lg transition-colors">
+         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+      </button>
+    </div>
+    <form [formGroup]="pompeForm" (ngSubmit)="onSubmit()" class="p-6">
+      <div class="space-y-4">
+        <div class="grid grid-cols-2 gap-4">
+          <div [class.col-span-2]="mode === 'create'">
+            <label class="block text-sm font-medium text-slate-700 mb-1">Type de Carburant <span class="text-rose-500">*</span></label>
+            <select formControlName="typeCarburant" class="w-full border border-slate-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-slate-800 bg-white">
+              <option value="ESSENCE">ESSENCE</option>
+              <option value="DIESEL">DIESEL</option>
+            </select>
+          </div>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-slate-700 mb-1">Station d'affectation <span class="text-rose-500">*</span></label>
+          <select formControlName="stationId" class="w-full border border-slate-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-slate-800 bg-white">
+            <option value="" disabled selected>Sélectionner une Station</option>
+            @for (station of stations; track station.id) {
+              <option [value]="station.id">{{ station.nom }} (ST-{{ station.id }})</option>
+            }
+          </select>
+          @if (pompeForm.get('stationId')?.touched && pompeForm.get('stationId')?.invalid) {
+            <p class="text-rose-500 text-xs mt-1">L'affectation à une station est obligatoire.</p>
+          }
+        </div>
+        <div class="grid grid-cols-3 gap-4">
+          <div>
+            <label class="block text-sm font-medium text-slate-700 mb-1">Capacité (L)</label>
+            <input formControlName="capaciteMax" type="number" class="w-full border border-slate-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-slate-800" min="1">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-slate-700 mb-1">Niveau (L)</label>
+            <input formControlName="niveauActuel" type="number" class="w-full border border-slate-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-slate-800" min="0">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-slate-700 mb-1">Prix/L (MAD)</label>
+            <input formControlName="prixParLitre" type="number" step="0.01" class="w-full border border-slate-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-slate-800" min="0.01">
+          </div>
+        </div>
+        <div class="flex items-center gap-3 pt-2">
+          <label class="relative inline-flex items-center cursor-pointer">
+            <input type="checkbox" formControlName="enService" class="sr-only peer">
+            <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-500"></div>
+            <span class="ml-3 text-sm font-medium text-slate-700">Pompe en service</span>
+          </label>
+        </div>
+      </div>
+      <div class="mt-8 flex justify-end gap-3 pt-4 border-t border-slate-100">
+        <button type="button" (click)="onCancel()" class="px-5 py-2.5 rounded-lg text-sm font-medium text-slate-600 bg-white border border-slate-200 hover:bg-slate-50 transition-colors">
+          Annuler
+        </button>
+        <button type="submit" [disabled]="pompeForm.invalid" class="px-5 py-2.5 rounded-lg text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors shadow-sm">
+          {{ mode === 'create' ? 'Ajouter Pompe' : 'Enregistrer' }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
