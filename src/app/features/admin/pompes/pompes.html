@@ -1,0 +1,92 @@
+<div class="space-y-6">
+  <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 bg-white p-6 rounded-2xl border border-slate-100 shadow-sm relative overflow-hidden">
+    <div class="relative z-10 flex flex-col gap-2">
+      <div class="flex items-center gap-2 text-indigo-600 font-semibold text-sm">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v8l9-11h-7z"></path></svg>
+        Gestion des Infrastructures
+      </div>
+      <h1 class="text-3xl font-black text-slate-900 tracking-tight">Pompes de Carburant</h1>
+      <p class="text-slate-500 font-medium max-w-lg">Supervisez vos pompes, gérez les stocks en temps réel et optimisez la distribution dans vos stations.</p>
+    </div>
+    <div class="relative z-10 flex flex-wrap items-center gap-3">
+      <button (click)="openModal('create')" 
+              class="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-xl font-bold transition-all shadow-lg shadow-indigo-100 hover:scale-[1.02] active:scale-[0.98]">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
+        Ajouter une Pompe
+      </button>
+    </div>
+    <div class="absolute -right-12 -top-12 w-48 h-48 bg-indigo-50/50 rounded-full blur-3xl"></div>
+  </div>
+  <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 bg-white p-4 rounded-xl border border-slate-100 shadow-sm">
+    <div class="flex flex-wrap items-center gap-2">
+      <button (click)="setFilter('ALL')" 
+              [class.bg-indigo-600]="statusFilter === 'ALL'" [class.text-white]="statusFilter === 'ALL'"
+              class="px-4 py-2 rounded-lg text-sm font-semibold transition-all border border-transparent hover:border-indigo-100">
+        Toutes
+      </button>
+      <button (click)="setFilter('ACTIVE')" 
+              [class.bg-emerald-500]="statusFilter === 'ACTIVE'" [class.text-white]="statusFilter === 'ACTIVE'"
+              class="px-4 py-2 rounded-lg text-sm font-semibold transition-all border border-transparent hover:border-emerald-100">
+        Actives
+      </button>
+      <button (click)="setFilter('INACTIVE')" 
+              [class.bg-rose-500]="statusFilter === 'INACTIVE'" [class.text-white]="statusFilter === 'INACTIVE'"
+              class="px-4 py-2 rounded-lg text-sm font-semibold transition-all border border-transparent hover:border-rose-100">
+        Inactives
+      </button>
+    </div>
+    <div class="relative w-full lg:w-72">
+      <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
+        <svg class="w-4 h-4 text-slate-400 font-bold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+      </div>
+      <input type="text" (input)="onSearch($event)" placeholder="Rechercher par code ou type..." 
+             class="pl-10 pr-4 py-2.5 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 w-full transition-all bg-slate-50/50">
+    </div>
+  </div>
+  <app-pompe-table 
+    [pompes]="pagedPompes" 
+    [isLoading]="isLoading"
+    (viewDetails)="openDrawer($event)"
+    (edit)="openModal('edit', $event)"
+    (delete)="deletePompe($event)"
+    (restore)="restorePompe($event)">
+  </app-pompe-table>
+  @if (totalPages > 1) {
+    <div class="flex items-center justify-between px-2 py-4">
+      <p class="text-sm font-medium text-slate-500 italic">
+        Page <span class="text-slate-900 font-bold">{{ currentPage }}</span> sur <span class="text-slate-900 font-bold">{{ totalPages }}</span>
+      </p>
+      <div class="flex gap-1.5">
+        <button [disabled]="currentPage === 1" (click)="goToPage(currentPage - 1)" 
+                class="p-2 rounded-lg border border-slate-200 bg-white text-slate-600 hover:bg-slate-50 disabled:opacity-40 disabled:hover:bg-white transition-all">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+        </button>
+        @for (p of pageNumbers; track p) {
+          <button (click)="goToPage(p)"
+                  [class.bg-indigo-600]="currentPage === p" [class.text-white]="currentPage === p" [class.border-indigo-600]="currentPage === p"
+                  class="w-10 h-10 rounded-lg border border-slate-200 text-sm font-bold transition-all hover:border-indigo-400">
+            {{ p }}
+          </button>
+        }
+        <button [disabled]="currentPage === totalPages" (click)="goToPage(currentPage + 1)" 
+                class="p-2 rounded-lg border border-slate-200 bg-white text-slate-600 hover:bg-slate-50 disabled:opacity-40 disabled:hover:bg-white transition-all">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+        </button>
+      </div>
+    </div>
+  }
+  <app-pompe-form 
+    *ngIf="isModalOpen"
+    [mode]="modalMode"
+    [initialData]="selectedPompe"
+    [stations]="stations"
+    (formSubmit)="onFormSubmit($event)"
+    (cancel)="closeModal()">
+  </app-pompe-form>
+  <app-pompe-drawer 
+    [isOpen]="isDrawerOpen"
+    [pompe]="selectedPompe"
+    (close)="closeDrawer()"
+    (edit)="openModal('edit', $event)">
+  </app-pompe-drawer>
+</div>
