@@ -76,7 +76,9 @@
             <th scope="col" class="px-6 py-3 text-right text-xs font-semibold text-slate-500 uppercase tracking-wider">
               Volume Added (L)</th>
             <th scope="col" class="px-6 py-3 text-right text-xs font-semibold text-slate-500 uppercase tracking-wider">
-              Stock After Supply</th>
+              Remaining Stock (L)</th>
+            <th scope="col" class="px-6 py-3 text-right text-xs font-semibold text-slate-500 uppercase tracking-wider">
+              Station Total After</th>
             <th scope="col" class="px-6 py-3 text-right text-xs font-semibold text-slate-500 uppercase tracking-wider">
             </th>
           </tr>
@@ -112,6 +114,14 @@
             </td>
             <td class="px-6 py-4 whitespace-nowrap text-right text-sm text-emerald-600 font-bold font-mono">
               + {{ app.quantiteAjoutee | number:'1.2-2' }}
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-right">
+              <span [class.bg-emerald-100]="app.quantiteRestante > 0" [class.text-emerald-700]="app.quantiteRestante > 0"
+                [class.bg-slate-100]="app.quantiteRestante === 0" [class.text-slate-500]="app.quantiteRestante === 0"
+                class="px-2.5 py-1 rounded-full text-xs font-bold font-mono border"
+                [class.border-emerald-200]="app.quantiteRestante > 0" [class.border-slate-200]="app.quantiteRestante === 0">
+                {{ app.quantiteRestante | number:'1.2-2' }} L
+              </span>
             </td>
             <td class="px-6 py-4 whitespace-nowrap text-right text-sm text-slate-700 font-mono">
               {{ app.niveauApres | number:'1.2-2' }} L
@@ -224,6 +234,10 @@
               <div class="flex justify-between items-center text-sm">
                 <span class="text-emerald-600 font-medium">Replenishment (+)</span>
                 <span class="text-emerald-600 font-bold">+ {{ selectedApp.quantiteAjoutee | number:'1.2-2' }} L</span>
+              </div>
+              <div class="flex justify-between items-center text-sm p-2 bg-indigo-50 rounded-lg border border-indigo-100">
+                <span class="text-indigo-700 font-bold">Currently Available (FIFO)</span>
+                <span class="text-indigo-700 font-black">{{ selectedApp.quantiteRestante | number:'1.2-2' }} L</span>
               </div>
               <div class="pt-2 border-t border-slate-200 flex justify-between items-center">
                 <span class="text-xs font-bold text-slate-400 uppercase">Settled Stock Level</span>

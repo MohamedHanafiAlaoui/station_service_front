@@ -138,6 +138,7 @@ export class Approvisionnements implements OnInit {
         ...app,
         dateFormatted: dateVal ? new Date(dateVal).toLocaleString('fr-FR') : 'N/A',
         quantiteAjoutee: app.quantite || 0,
+        quantiteRestante: app.quantiteDisponible || 0,
         niveauAvant: app.niveauAvant || 0,  
         niveauApres: app.niveauApres || 0,
         pompeInfo: app.pompe ? `P${app.pompe.codePompe}` : 'ST-SUPPLY',
