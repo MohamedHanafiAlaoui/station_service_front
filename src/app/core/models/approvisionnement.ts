@@ -4,7 +4,7 @@ export interface Approvisionnement {
   typeCarburant: 'ESSENCE' | 'DIESEL';
   stationId: number;
   dateApprovisionnement?: string;
-  dateAppro?: string; // For compatibility with some UI components
+  dateAppro?: string; 
   niveauApres?: number;
   quantiteDisponible?: number;
   fournisseur?: string;
