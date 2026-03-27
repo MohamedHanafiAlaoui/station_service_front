@@ -44,7 +44,6 @@ export class Dashboard {
   ngOnInit() {
     const clientId = this.auth.getUserId();
     if (!clientId) {
-      console.error("ما كاين حتى عميل متصل");
       return;
     }
     this.loadClientData(clientId);
