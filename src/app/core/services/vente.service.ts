@@ -57,4 +57,9 @@ export class VenteService {
     }
     return this.http.get<any>(Api.VENTES, { params });
   }
+
+  getclientvent(id:number)
+  {
+ return this.http.get<number>(`${Api.VENTES}/clienr/vent/${id}`);
+  }
 }
