@@ -7,6 +7,7 @@ import { selectHistorique, selectLoading, selectError } from '../store/client.se
 import { AuthService } from '../../../core/services/Auth';
 import { StationService } from '../../../core/services/station';
 import { Station } from '../../../core/models/station';
+import { VenteService } from '../../../core/services/vente.service';
 @Component({
   selector: 'client-historique',
   standalone: true,
@@ -18,10 +19,12 @@ export class Historique {
   private store = inject(Store);
   private auth = inject(AuthService);
   private stationService = inject(StationService);
+  private vent =inject(VenteService) ;
   historique$ = this.store.select(selectHistorique);
   loading$ = this.store.select(selectLoading);
   error$ = this.store.select(selectError);
   stations: Station[] = [];
+  monven: number = 0;
   filters = {
     start: '2020-01-01T00:00:00',
     end: '2030-01-01T00:00:00',
@@ -37,6 +40,11 @@ export class Historique {
       end: this.filters.end,
       pageable: { page: 0, size: 20 }
     }));
+    this.vent.getclientvent(clientId).subscribe({
+      next:(value)=>this.monven=value,
+      error:(e)=>console.error(e)
+    })
+  
   }
   loadStations() {
     this.stationService.getAllStations().subscribe({
@@ -65,4 +73,8 @@ export class Historique {
       minQuantite: this.filters.minQuantite ?? undefined,
     }));
   }
+
+  
+
+
 }
