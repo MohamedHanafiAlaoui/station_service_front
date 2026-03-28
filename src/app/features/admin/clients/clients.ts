@@ -210,8 +210,10 @@ export class Clients implements OnInit {
       inputPlaceholder: 'Nouveau mot de passe',
       inputAttributes: {
         autocapitalize: 'off',
-        autocorrect: 'off'
+        autocorrect: 'off',
+        autocomplete: 'new-password'
       },
+
       showCancelButton: true,
       confirmButtonText: 'Réinitialiser',
       cancelButtonText: 'Annuler',
