@@ -30,7 +30,7 @@ export class VentesList implements OnInit {
     { field: 'quantite', header: 'Quantité (L)' },
     { field: 'prixUnitaire', header: 'Prix/L (MAD)' },
     { field: 'montantTotal', header: 'Total (MAD)' },
-    { field: 'typePaiement', header: 'Type' }
+    { field: 'typePaiement', header: 'Paiement' }
   ];
   constructor(private store: Store, private fb: FormBuilder, private authService: AuthService) {
     this.ventes$ = this.store.select(selectAllVentes);
@@ -65,13 +65,17 @@ export class VentesList implements OnInit {
     this.loadVentes(0);
   }
   getMappedData(data: Vente[]): any[] {
-    return data.map(item => ({
-      ...item,
-      date: new Date(item.dateVente || '').toLocaleString('fr-FR'),
-      montantTotal: Number(item.montant || 0).toFixed(2),
-      prixUnitaire: item.quantite > 0 ? Number((item.montant || 0) / item.quantite).toFixed(2) : '0.00',
-      pompeInfo: item.pompe ? `Pompe ${item.pompe.codePompe}` : 'N/A',
-      typePaiement: item.client ? 'Badge Client' : 'Espèces'  
-    }));
+    return data.map(item => {
+      const montant = item.montant !== undefined ? item.montant : (item.montantPaye || 0);
+      const prixUnitaire = item.prixUnitaire !== undefined ? item.prixUnitaire : (item.quantite > 0 ? montant / item.quantite : 0);
+      return {
+        ...item,
+        date: new Date(item.dateVente || '').toLocaleString('fr-FR'),
+        montantTotal: Number(montant).toFixed(2),
+        prixUnitaire: Number(prixUnitaire).toFixed(2),
+        pompeInfo: item.pompe ? `Pompe ${item.pompe.codePompe} (${item.pompe.typeCarburant})` : 'N/A',
+        typePaiement: item.client ? `Badge RFID` : 'Badge RFID'
+      };
+    });
   }
 }
