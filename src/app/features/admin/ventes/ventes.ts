@@ -119,8 +119,9 @@ export class Ventes implements OnInit {
   private mapVentes(ventes: any[]): any[] {
     return ventes.map(v => ({
       ...v,
+      montant: v.montant !== undefined ? v.montant : (v.montantPaye || 0),
       date: new Date(v.dateVente).toLocaleString(),
-      clientName: v.client ? `${v.client.prenom} ${v.client.nom}` : 'Direct Sale',
+      clientName: v.client ? `${v.client.prenom} ${v.client.nom}` : 'Système (Anonyme)',
       pompeCode: v.pompe ? `P${v.pompe.codePompe}` : 'N/A'
     }));
   }
