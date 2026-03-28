@@ -44,7 +44,12 @@ export class Login {
         else if (role === 'ROLE_CLIENT') this.router.navigate(['/client']);
       },
       error: (msg) => {
-        this.error = typeof msg === 'string' ? msg : 'Erreur de connexion.';
+        const errorStr = typeof msg === 'string' ? msg : JSON.stringify(msg);
+        if (errorStr.toLowerCase().includes('401') || errorStr.toLowerCase().includes('unauthorized') || errorStr.toLowerCase().includes('bad credentials')) {
+          this.error = "Nom d'utilisateur ou mot de passe incorrect.";
+        } else {
+          this.error = "Erreur de connexion serveur.";
+        }
       },
     });
   }
